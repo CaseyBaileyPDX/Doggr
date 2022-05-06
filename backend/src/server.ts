@@ -29,8 +29,8 @@ async function minioTest() {
 
 async function main() {
 
-  await minioTest();
-  return;
+  //await minioTest();
+
   // Don't interfere with Jest/supertest!
   if (process.env.NODE_ENV !== 'test') {
     const app = express();

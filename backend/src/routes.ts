@@ -2,20 +2,44 @@ import cors from "cors";
 import { promises as fs } from "fs";
 import path from "path";
 import express from "express";
+//import fileUpload from "express-fileupload";
+import Multer from "multer";
+import Minio from "minio";
 import { testMongo, testPostgres } from "./lib/helpers";
 import { checkDuplicateEmail } from "./middlewares/verifySignUp";
 import { createUser } from "./services/userService";
+
+const _minio = require("minio");
+
+const minioClient = new _minio.Client({
+  endPoint: 'localhost',
+  port: 8000,
+  useSSL: false,
+  accessKey: 'minioadmin',
+  secretKey: 'minioadmin',
+});
 
 export default function setupRoutes(app) {
 
   app.use(cors());
   app.use(express.json());
+  //app.use(fileUpload());
 
   // We're using a router now, so that we can prefix it with /api/v1 later
   const router = express.Router();
 
   router.post("/users", checkDuplicateEmail, createUser );
 
+  router.post("/uploadFile", Multer({storage: Multer.memoryStorage()}).single("file"), (req, res) => {
+    console.log("About to upload file");
+    console.log(req.file);
+    minioClient.putObject("doggr", req.file.originalname, req.file.buffer, function (error, etag) {
+      if (error) {
+        return console.log(error);
+      }
+      res.send(req.file);
+    });
+  });
 
 
   router.use("/testJson", (req, res) => {
@@ -35,7 +59,7 @@ export default function setupRoutes(app) {
     res.json(await testPostgres());
   });
 
-  
+
   // This will redirect all requests made to /api/vi/... to the router
   app.use("/api/v1", router);
 
