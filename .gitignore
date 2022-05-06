@@ -64,3 +64,4 @@ dist/
 .vscode/
 
 frontend/public/env.js
+minio/
