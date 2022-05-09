@@ -229,6 +229,7 @@ export const CreateUserForm = ({ handleInputChange, saveUser, user }) => {
       },
     };
     http.post("/uploadFile", formData, config).then((response) => {
+      console.log("Got response from upload file:", response.status);
       if (response.status === 200) {
         setSubmitted(SubmissionStatus.SubmitSucceeded)
       } else {

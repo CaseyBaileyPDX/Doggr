@@ -8,6 +8,9 @@ import Minio from "minio";
 import { testMongo, testPostgres } from "./lib/helpers";
 import { checkDuplicateEmail } from "./middlewares/verifySignUp";
 import { createUser } from "./services/userService";
+import {
+  UploadFileToMinio,
+} from "./services/minioService";
 
 const _minio = require("minio");
 
@@ -30,16 +33,7 @@ export default function setupRoutes(app) {
 
   router.post("/users", checkDuplicateEmail, createUser );
 
-  router.post("/uploadFile", Multer({storage: Multer.memoryStorage()}).single("file"), (req, res) => {
-    console.log("About to upload file");
-    console.log(req.file);
-    minioClient.putObject("doggr", req.file.originalname, req.file.buffer, function (error, etag) {
-      if (error) {
-        return console.log(error);
-      }
-      res.send(req.file);
-    });
-  });
+  router.post("/uploadFile", Multer({storage: Multer.memoryStorage()}).single("file"), UploadFileToMinio);
 
 
   router.use("/testJson", (req, res) => {
