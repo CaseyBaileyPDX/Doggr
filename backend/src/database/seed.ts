@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { Sequelize, DataTypes } from "sequelize";
+import { Sequelize, DataTypes, QueryTypes } from "sequelize";
 import { db, User } from "./models";
 
 
@@ -25,7 +25,7 @@ const seed = async () => {
       console.log('failed to create seed users');
       console.log(err);
     });
-  
+
   await User.create({ email: "athirdemail@aol.com", password: "123456" })
     .then(() => {
       console.log("Created single user");
@@ -40,4 +40,49 @@ const seed = async () => {
 
 };
 
-seed();
+//seed();
+
+async function SeedMessages() {
+  console.log("Seeding messages");
+
+  const users = await db.query("SELECT * FROM users", { type: QueryTypes.SELECT });
+  console.log(users);
+
+  //   let query = `create table IF NOT EXISTS messages
+  // (
+  //     id           serial
+  //         constraint messages_pk
+  //             primary key,
+  //     sender_id    int  not null,
+  //     receiver_id  int  not null,
+  //     message_text text not null,
+  //     message_sent date not null
+  // );
+
+  // create unique index messages_id_uindex
+  //     on messages (id);
+
+  // `;
+
+  // const messages = await db.query(query, { type: QueryTypes.RAW });
+  // console.log(messages);
+
+  //INSERT INTO TABLE_NAME(column1, column2, column3, ...columnN)
+  //VALUES(value1, value2, value3, ...valueN);
+
+
+  await db.query(
+    `INSERT INTO messages(sender_id, receiver_id, message_text)
+          VALUES(?, ?, ?)`,
+    {
+      replacements: [1, 1, 'Hello'],
+      type: QueryTypes.INSERT,
+    },
+  );
+}
+
+async function TestSeed() {
+  await SeedMessages();
+}
+
+TestSeed();

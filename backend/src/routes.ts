@@ -16,8 +16,6 @@ export default function setupRoutes(app) {
 
   router.post("/users", checkDuplicateEmail, createUser );
 
-
-
   router.use("/testJson", (req, res) => {
     res.json(req.body);
   });
