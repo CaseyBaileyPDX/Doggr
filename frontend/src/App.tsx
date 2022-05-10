@@ -31,12 +31,16 @@ function App() {
     setLikeHistory(newLikeHistory);
   };
 
+  let onMessageButtonClick = (id) => {
+    console.log("Clicked message button");
+  }
+
   let profile = <Profile {...currentProfile}
     onLikeButtonClick={onLikeButtonClick}
     onPassButtonClick={onPassButtonClick} />
 
   let matchHistory = <MatchHistory likeHistory={likeHistory}
-    onUnmatchButtonClick={onUnmatchButtonClick} />
+    onUnmatchButtonClick={onUnmatchButtonClick} onMessageButtonClick={onMessageButtonClick} />
 
   return (
     <>
@@ -44,7 +48,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Header />}>
             <Route path="/" element={profile} />
-            <Route path="match-history" element={matchHistory} />            
+            <Route path="match-history" element={matchHistory} />
             <Route path="create-user" element={<CreateUser />} />
           </Route>
           <Route path="*" element={<NotFound />} />

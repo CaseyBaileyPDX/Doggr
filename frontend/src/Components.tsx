@@ -62,10 +62,11 @@ function FilterBar({ onApply }: FilterBarProps) {
   )
 }
 
-type MatchHistoryProfileProps = ProfileType & { onUnmatchButtonClick: (id: number) => void }
+//type MatchHistoryProfileProps = ProfileType & { onUnmatchButtonClick: (id: number) => void }
 
-function MatchHistoryProfile(props: MatchHistoryProfileProps) {
-  let { id, thumbUri, name, onUnmatchButtonClick } = props;
+function MatchHistoryProfile(props) {
+  let { id, thumbUri, name, onUnmatchButtonClick, onMessageButtonClick } = props;
+
 
   useEffect(() => {
     console.log(`Match History Profile ${name} rerendered`);
@@ -76,15 +77,17 @@ function MatchHistoryProfile(props: MatchHistoryProfileProps) {
     {name}
     &nbsp;
     <button onClick={() => onUnmatchButtonClick(id)}>Unmatch</button>
+    <button onClick={() => onMessageButtonClick(id)}>Message</button>
   </div>
 }
 
 export type MatchHistoryProps = {
   likeHistory: Array<ProfileType>,
   onUnmatchButtonClick: (id: number) => void,
+  onMessageButtonClick: (id: number) => void,
 }
 
-export function MatchHistory({ likeHistory, onUnmatchButtonClick }: MatchHistoryProps) {
+export function MatchHistory({ likeHistory, onUnmatchButtonClick, onMessageButtonClick }: MatchHistoryProps) {
   let [filterString, setFilterString] = useState("");
 
   let profilesToDisplay = useMemo(
@@ -107,6 +110,7 @@ export function MatchHistory({ likeHistory, onUnmatchButtonClick }: MatchHistory
         profile =>
           <MatchHistoryProfile
             onUnmatchButtonClick={onUnmatchButtonClick}
+            onMessageButtonClick={onMessageButtonClick}
             key={profile.id}
             {...profile} />
       )}
@@ -134,6 +138,37 @@ export const Header = () => {
     <Outlet />
   </div>
   );
+}
+
+export const MessageBox = () => {
+
+  const [message, setMessage] = useState("");
+  const [showMessageBox, setShowMessageBox] = useState(false);
+
+  function handleMessageChange(event) {
+    console.log("Message changed");
+    setMessage(event.target.value);
+    setShowMessageBox(true);
+  }
+
+  return (
+    <div>
+      {showMessageBox ? (
+        <div>
+          <label htmlFor="message">Message</label>
+          <input
+            type="text"
+            id="message"
+            required
+            value={message}
+            onChange={handleMessageChange}
+            name="message"
+          />
+        </div>
+      ) : ()}
+
+    </div>
+  )
 }
 
 
@@ -174,7 +209,7 @@ export const CreateUser = () => {
 
   return (
     <div>
-      {submitted ? (
+      { submitted ? (
         <>     {/* If we've already submitted, show this piece*/}
           <h4>You submitted successfully!</h4>
           <button onClick={resetUser}>
@@ -183,7 +218,7 @@ export const CreateUser = () => {
         </>
       ) : (
         <>   {/* If we've NOT already submitted, show this piece*/}
-          {submitFailed && //This will only render if our prior submit failed
+          { submitFailed && //This will only render if our prior submit failed
             //we could add a div here and style this separately
             <h2>Email already exists!</h2>
           }
