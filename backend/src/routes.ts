@@ -4,48 +4,78 @@ import { promises as fs } from "fs";
 import path from "path";
 import { QueryTypes } from "sequelize";
 import express from "express";
+import passport from "passport";
 import { testMongo, testPostgres } from "./lib/helpers";
 import { checkDuplicateEmail } from "./middlewares/verifySignUp";
 import { createUser } from "./services/userService";
 import { db } from "./database/models";
+import { ConfigurePassport, generateAccessToken } from "./services/AuthService";
+import AuthenticateToken from "./middlewares/AuthenticateToken";
 
-
-
-function validateMessage(req, res, next) {
-  const { message_text } = req.body;
-
-  if (message_text === "") {
-    console.log("Error there was no message text");
-    return;
-  }
-  next();
-}
 
 export default function setupRoutes(app) {
 
   app.use(cors());
   app.use(express.json());
 
+  ConfigurePassport(app);
+
   // We're using a router now, so that we can prefix it with /api/v1 later
   const router = express.Router();
 
-  router.post("/users", checkDuplicateEmail, createUser);
+  router.post("/users",
+    checkDuplicateEmail,
+    passport.authenticate("signup", { session: false }),
+    (req, res) => {
+      res.json({ message: "Signup success" });
+    },
+  );
+
+  router.post(
+    '/login',
+    async (req, res, next) => {
+      passport.authenticate(
+        'login',
+        async (err, user, info) => {
+          console.log("User from passport is: ", user);
+
+          if (user === false) {
+            res.status(403).send("User or password was invalid");
+            return;
+          }
+
+          // USER IS APPROVED FOR LOGIN, passwords have matched
+          const token = generateAccessToken(user.email);
+          console.log("Login success, got token: ", token);
+          res.status(200).send(token);
+        },
+      )(req, res, next);
+    },
+  );
+
+  router.post("/authTest", AuthenticateToken, (req, res) => {
+    res.send("CONGRATS WE SURVIVED AUTH");
+  });
 
   // Req needs to have message text, sender_id, receiver_id
-  router.post("/messages", validateMessage, async (req, res) => {
+  router.post("/messages", async (req, res) => {
 
     const { message_text, sender_id, receiver_id } = req.body;
 
-    await db.query(
-      `INSERT INTO messages(sender_id, receiver_id, message_text)
-          VALUES(?, ?, ?)`,
-      {
-        replacements: [sender_id, receiver_id, message_text],
-        type: QueryTypes.INSERT,
-      },
-    );
+    try {
+      await db.query(
+        `INSERT INTO messages(sender_id, receiver_id, message_text, message_sent)
+          VALUES(?, ?, ?, ?)`,
+        {
+          replacements: [sender_id, receiver_id, message_text, new Date().toISOString()],
+          type: QueryTypes.INSERT,
+        },
+      );
 
-    res.status(200).send("Added successfully\r");
+      res.status(200).send("Added successfully\r");
+    } catch (err) {
+      res.status(500).send(err);
+    }
   });
 
   router.use("/testJson", (req, res) => {
@@ -61,6 +91,7 @@ export default function setupRoutes(app) {
     res.json(mongoinfo);
   });
 
+  // actually getting localhost:9000/api/v1/testPostgres
   router.get("/testPostgres", async (req, res) => {
     res.json(await testPostgres());
   });
@@ -100,3 +131,4 @@ async function getStaticFile(res, filePath) {
       res.status(200).send(file);
     });
 }
+

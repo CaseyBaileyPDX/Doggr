@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Profile as ProfileType } from "./types/StateTypes";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { User } from "./services/UserService";
+import { Message } from "./services/MessageService";
 
 export type ProfileProps = {
   id: number,
@@ -64,9 +65,21 @@ function FilterBar({ onApply }: FilterBarProps) {
 
 //type MatchHistoryProfileProps = ProfileType & { onUnmatchButtonClick: (id: number) => void }
 
-function MatchHistoryProfile(props) {
-  let { id, thumbUri, name, onUnmatchButtonClick, onMessageButtonClick } = props;
+type MsgBoxState = {
+  sender_id: number,
+  receiver_id: number,
+}
 
+function MatchHistoryProfile(props) {
+  let { id, thumbUri, name, onUnmatchButtonClick } = props;
+
+  const navigate = useNavigate();
+
+  let onMessageButtonClick = (id) => {
+    const state: MsgBoxState = { sender_id: 1, receiver_id: 1 }
+    navigate("/messages", { state: state })
+    //props.state.sender_id
+  }
 
   useEffect(() => {
     console.log(`Match History Profile ${name} rerendered`);
@@ -83,11 +96,10 @@ function MatchHistoryProfile(props) {
 
 export type MatchHistoryProps = {
   likeHistory: Array<ProfileType>,
-  onUnmatchButtonClick: (id: number) => void,
-  onMessageButtonClick: (id: number) => void,
+  onUnmatchButtonClick: (id: number) => void, 
 }
 
-export function MatchHistory({ likeHistory, onUnmatchButtonClick, onMessageButtonClick }: MatchHistoryProps) {
+export function MatchHistory({ likeHistory, onUnmatchButtonClick}: MatchHistoryProps) {
   let [filterString, setFilterString] = useState("");
 
   let profilesToDisplay = useMemo(
@@ -109,8 +121,7 @@ export function MatchHistory({ likeHistory, onUnmatchButtonClick, onMessageButto
       {profilesToDisplay.map(
         profile =>
           <MatchHistoryProfile
-            onUnmatchButtonClick={onUnmatchButtonClick}
-            onMessageButtonClick={onMessageButtonClick}
+            onUnmatchButtonClick={onUnmatchButtonClick}            
             key={profile.id}
             {...profile} />
       )}
@@ -142,31 +153,39 @@ export const Header = () => {
 
 export const MessageBox = () => {
 
+  //useNavigate("/messages") lands here
+  const state = useLocation().state as MsgBoxState;
+
   const [message, setMessage] = useState("");
-  const [showMessageBox, setShowMessageBox] = useState(false);
+  
 
   function handleMessageChange(event) {
     console.log("Message changed");
-    setMessage(event.target.value);
-    setShowMessageBox(true);
+    setMessage(event.target.value);    
+  }
+
+  async function onSubmitButtonClick() {
+    if (state !== null) {
+      const result = await Message.send(message, state.sender_id, state.receiver_id);
+      console.log(result);
+    }
   }
 
   return (
     <div>
-      {showMessageBox ? (
-        <div>
-          <label htmlFor="message">Message</label>
-          <input
-            type="text"
-            id="message"
-            required
-            value={message}
-            onChange={handleMessageChange}
-            name="message"
-          />
-        </div>
-      ) : ()}
-
+      <label htmlFor="message">Message</label>
+      <input
+        type="text"
+        id="message"
+        required
+        value={message}
+        onChange={handleMessageChange}
+        name="message"
+      />
+      <br />
+      <button onClick={onSubmitButtonClick}>
+        Submit
+      </button>
     </div>
   )
 }

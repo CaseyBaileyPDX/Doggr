@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import initialState, { getRandomProfile } from "./initialState";
-import { CreateUser, Header, MatchHistory, NotFound, Profile } from "./Components";
+import { CreateUser, Header, MatchHistory, MessageBox, NotFound, Profile } from "./Components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -31,16 +31,13 @@ function App() {
     setLikeHistory(newLikeHistory);
   };
 
-  let onMessageButtonClick = (id) => {
-    console.log("Clicked message button");
-  }
 
   let profile = <Profile {...currentProfile}
     onLikeButtonClick={onLikeButtonClick}
     onPassButtonClick={onPassButtonClick} />
 
   let matchHistory = <MatchHistory likeHistory={likeHistory}
-    onUnmatchButtonClick={onUnmatchButtonClick} onMessageButtonClick={onMessageButtonClick} />
+    onUnmatchButtonClick={onUnmatchButtonClick}  />
 
   return (
     <>
@@ -50,6 +47,7 @@ function App() {
             <Route path="/" element={profile} />
             <Route path="match-history" element={matchHistory} />
             <Route path="create-user" element={<CreateUser />} />
+            <Route path="messages" element={<MessageBox />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
