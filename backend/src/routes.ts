@@ -5,18 +5,35 @@ import path from "path";
 import { QueryTypes } from "sequelize";
 import express from "express";
 import passport from "passport";
+//import fileUpload from "express-fileupload";
+import Multer from "multer";
+import Minio from "minio";
 import { testMongo, testPostgres } from "./lib/helpers";
 import { checkDuplicateEmail } from "./middlewares/verifySignUp";
 import { createUser } from "./services/userService";
 import { db } from "./database/models";
 import { ConfigurePassport, generateAccessToken } from "./services/AuthService";
 import AuthenticateToken from "./middlewares/AuthenticateToken";
+import {
+  UploadFileToMinio,
+} from "./services/minioService";
+
+const _minio = require("minio");
+
+const minioClient = new _minio.Client({
+  endPoint: 'localhost',
+  port: 8000,
+  useSSL: false,
+  accessKey: 'minioadmin',
+  secretKey: 'minioadmin',
+});
 
 
 export default function setupRoutes(app) {
 
   app.use(cors());
   app.use(express.json());
+  //app.use(fileUpload());
 
   ConfigurePassport(app);
 
@@ -31,6 +48,7 @@ export default function setupRoutes(app) {
     },
   );
 
+  router.post("/uploadFile", Multer({storage: Multer.memoryStorage()}).single("file"), UploadFileToMinio);
   router.post(
     '/login',
     async (req, res, next) => {
@@ -131,4 +149,3 @@ async function getStaticFile(res, filePath) {
       res.status(200).send(file);
     });
 }
-

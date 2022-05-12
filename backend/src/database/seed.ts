@@ -1,7 +1,14 @@
 import "dotenv/config";
 import { Sequelize, DataTypes, QueryTypes } from "sequelize";
 import { db, User } from "./models";
+import { minioClient } from "../services/minioService";
 
+const seedMinio = async () => {
+  minioClient.makeBucket("doggr", "localhost", (err) => {
+    if (err) console.log("Couldn't make bucket");
+    else console.log("Made bucket");
+  } );
+};
 
 const userSeedData = [
   { email: "test@gmail.com", password: "123456" },
@@ -11,6 +18,8 @@ const userSeedData = [
 
 const SeedUsers = async () => {
   console.log("Beginning seed");
+
+  await seedMinio();
 
   // force true will drop the table if it already exists
   // such that every time we run seed, we start completely fresh

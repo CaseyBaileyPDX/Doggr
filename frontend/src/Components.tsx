@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Profile as ProfileType } from "./types/StateTypes";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { User } from "./services/UserService";
+import http from "./services/HttpService";
 import { Message } from "./services/MessageService";
 
 export type ProfileProps = {
@@ -249,9 +250,60 @@ export const CreateUser = () => {
   )
 }
 
+enum SubmissionStatus {
+  NotSubmitted,
+  SubmitFailed,
+  SubmitSucceeded
+}
+
 export const CreateUserForm = ({ handleInputChange, saveUser, user }) => {
+
+  const [selectedFile, setSelectedFile] = useState();
+  const [submitted, setSubmitted] = useState(SubmissionStatus.NotSubmitted);
+
+  const onFileChange = event => {
+
+    // Update the state
+    setSelectedFile(event.target.files[0]);
+
+  };
+
+  const onUploadFile = (event) => {
+    event.preventDefault();
+    // @ts-ignore
+
+    const formData = new FormData();
+    // @ts-ignore
+    formData.append('file', selectedFile);
+    // @ts-ignore
+    formData.append('fileName', selectedFile.name);
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    };
+    http.post("/uploadFile", formData, config).then((response) => {
+      console.log("Got response from upload file:", response.status);
+      if (response.status === 200) {
+        setSubmitted(SubmissionStatus.SubmitSucceeded)
+      } else {
+        setSubmitted(SubmissionStatus.SubmitFailed);
+      }
+
+    });
+  }
+
+  // return (
+  //     <div>
+  //       {submitted ? (
+  //           <>     {/* If we've already submitted, show this piece*/}
+  //             <h4>You submi
+
   return (
     <div>
+      { submitted === SubmissionStatus.SubmitFailed &&
+        <h3>Submitting file failed!</h3>
+      }
       <div>
         <label htmlFor="email">Email</label>
         <input
@@ -279,6 +331,20 @@ export const CreateUserForm = ({ handleInputChange, saveUser, user }) => {
       <button onClick={saveUser}>
         Create
       </button>
+      <div>
+        <label
+            htmlFor="profilepic">Choose a profile picture:
+        </label>
+        <input
+            type="file"
+            id="profilepic"
+            name="profilepic"
+            accept="image/png, image/jpeg"
+            onChange={onFileChange}
+        />
+        <button onClick={onUploadFile}>Upload File</button>
+
+      </div>
     </div>
   )
 }
