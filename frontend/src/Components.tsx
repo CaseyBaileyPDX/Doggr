@@ -140,7 +140,7 @@ export const NotFound = () => (
 export const Header = () => {
   return (<div>
     <h1>Doggr</h1>
-    <h3>Where your pets finds love(tm)</h3>
+    <div className="text-3xl subheader font-bold underline text-white">Where your pets finds love(tm)</div>
     <Link to="/">Dashboard</Link>
     &nbsp; | &nbsp;
     <Link to="/match-history">Match History</Link>

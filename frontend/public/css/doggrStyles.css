@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-color: #282c34;
+    /*color: yellow;*/
+    /*padding: 40px;*/
+    /*font-family: Arial;*/
+    /*text-align: center;*/
+}
+
+.subheader {
+    @apply border-2 border-red-900;
+}

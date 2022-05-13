@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import initialState, { getRandomProfile } from "./initialState";
 import {CreateProfile, CreateUser, Header, MatchHistory, MessageBox, NotFound, Profile} from "./Components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "/public/css/doggrStyles.css";
 
 function App() {
   let [currentProfile, setCurrentProfile] = useState(initialState.currentProfile);
