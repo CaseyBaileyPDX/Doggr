@@ -95,3 +95,4 @@ export const Message = db.define<MessageModelAttrs>('profiles', {
     },
   },
 });
+

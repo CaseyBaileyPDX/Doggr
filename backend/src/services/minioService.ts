@@ -24,3 +24,4 @@ export const UploadFileToMinio = async (req, res) => {
   });
   console.log("Done uploading file");
 };
+

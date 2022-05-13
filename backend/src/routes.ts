@@ -14,9 +14,8 @@ import { createUser } from "./services/userService";
 import { db } from "./database/models";
 import { ConfigurePassport, generateAccessToken } from "./services/AuthService";
 import AuthenticateToken from "./middlewares/AuthenticateToken";
-import {
-  UploadFileToMinio,
-} from "./services/minioService";
+import { UploadFileToMinio } from "./services/minioService";
+import { CreateProfile } from "./services/ProfileService";
 
 const _minio = require("minio");
 
@@ -49,6 +48,8 @@ export default function setupRoutes(app) {
   );
 
   router.post("/uploadFile", Multer({storage: Multer.memoryStorage()}).single("file"), UploadFileToMinio);
+  router.post("/createProfile", Multer({storage: Multer.memoryStorage()}).single("file"), CreateProfile);
+
   router.post(
     '/login',
     async (req, res, next) => {
