@@ -1,25 +1,17 @@
 import "dotenv/config";
-import { Sequelize, DataTypes, QueryTypes } from "sequelize";
-import { db, User } from "./models";
-import { minioClient } from "../services/minioService";
-
-const seedMinio = async () => {
-  minioClient.makeBucket("doggr", "localhost", (err) => {
-    if (err) console.log("Couldn't make bucket");
-    else console.log("Made bucket");
-  } );
-};
-
-const userSeedData = [
-  { email: "test@gmail.com", password: "123456" },
-  { email: "test2@email.com", password: "password" },
-];
-
+import {QueryTypes} from "sequelize";
+import {
+  db, Profile, User, Message,
+} from "./models";
+import {minioClient} from "../services/minioService";
 
 const SeedUsers = async () => {
   console.log("Beginning seed");
 
-  await seedMinio();
+  const userSeedData = [
+    { email: "test@gmail.com", password: "123456" },
+    { email: "test2@email.com", password: "password" },
+  ];
 
   // force true will drop the table if it already exists
   // such that every time we run seed, we start completely fresh
@@ -45,42 +37,104 @@ const SeedUsers = async () => {
     });
 };
 
-async function SeedMessages() {
-  console.log("Seeding messages");
+const SeedMessages = async () => {
+  console.log("Beginning seed messages");
 
-  let query = `create table IF NOT EXISTS messages
-  (
-      id           serial
-          constraint messages_pk
-              primary key,
-      sender_id    int  not null,
-      receiver_id  int  not null,
-      message_text text not null,
-      message_sent date not null
-  );
+  const messageSeedData = [
+    { message_text: "hi from first seed message", sender_id: 1, receiver_id: 2 },
+    { message_text: "hi from second seed message", sender_id: 2, receiver_id: 1 },
+    { message_text: "hi from third seed message", sender_id: 1, receiver_id: 2 },
+  ];
 
-  create unique index messages_id_uindex
-      on messages (id);
+  await Message.sync({ force: true });
 
-  `;
+  console.log('Messages table created');
 
-  const messages_table = await db.query(query, { type: QueryTypes.RAW });
-  console.log(messages_table);
+  await Message.bulkCreate(messageSeedData, { validate: true })
+    .then(() => {
+      console.log('Messages seeded');
+    }).catch((err) => {
+      console.log('failed to create seed messages');
+      console.log(err);
+    });
+};
 
-  await db.query(
-    `INSERT INTO messages(sender_id, receiver_id, message_text, message_sent)
-          VALUES(?, ?, ?, ?)`,
-    {
-      replacements: [1, 1, 'Hello', new Date().toISOString()],
-      type: QueryTypes.INSERT,
-    },
-  );
+
+
+
+async function SeedProfiles() {
+  console.log("Seeding profiles");
+
+  await Profile.sync({ force: true });
+
+  const profileSeedData = [
+    { name: "Doggo", userId: 1, profileUrl: "profile1.jpg" },
+    { name: "Catte", userId: 2, profileUrl: "profile2.jpg" },
+  ];
+
+  await Profile.bulkCreate(profileSeedData, { validate: true })
+    .then(() => {
+      console.log('Profiles created');
+    }).catch((err) => {
+      console.log('failed to create seed Profiles');
+      console.log(err);
+    });
 }
+
+const SeedMinio = async () => {
+  console.log("in seed minio");
+
+  const makeBucket = async () => {
+
+    minioClient.makeBucket("doggr", "localhost", async (err) => {
+      if (err) {
+        console.log("Couldn't make bucket", err);
+        return;
+      }
+
+      console.log("Made bucket");
+
+      await minioClient.fPutObject("doggr", "profile1.jpg", "assets/seed/profile1.jpg");
+      await minioClient.fPutObject("doggr", "profile2.jpg", "assets/seed/profile2.jpg");
+    });
+  };
+
+  const bucketExists = await minioClient.bucketExists("doggr");
+  if (bucketExists) {
+    console.log("in bucket exists");
+    let itemNames: string[] = [];
+
+    let stream = minioClient
+      .extensions
+      .listObjectsV2WithMetadata('doggr', '', true, '');
+
+    // This event triggers
+    stream.on('data', function (obj) {
+      itemNames.push(obj.name);
+    });
+    stream.on('error', function (err) {
+      console.log(err);
+    });
+    stream.on('end', async function () {
+      // Careful here, having to mix oldschool callbacks with await can get tricky
+      await minioClient.removeObjects("doggr", itemNames);
+      await minioClient.removeBucket("doggr");
+      await makeBucket();
+    });
+  } else {
+    await makeBucket();
+  }
+};
 
 async function Seed() {
-  await SeedMessages();
+  console.log("Beginning seed");
+
   await SeedUsers();
-  db.close();
+  await SeedMessages();
+  await SeedMinio();
+  await SeedProfiles();
+
 }
 
-Seed();
+Seed()
+  .then(res => db.close());

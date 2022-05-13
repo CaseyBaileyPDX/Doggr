@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "start": "react-dotenv && react-scripts start",
+    "dev": "react-dotenv && react-scripts start",
     "build": "react-dotenv && react-scripts build",
     "test": "react-dotenv && react-scripts test",
     "NONOSPOT": "react-scripts eject",

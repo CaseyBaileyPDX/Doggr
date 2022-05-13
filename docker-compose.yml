@@ -58,11 +58,11 @@ services:
 
 
     ##########################################################################
-    #################### MEGA MINIO FILE STORAGE ##################################
+    #################### MEGA MINIO FILE STORAGE EXAMPLE #####################
     # Just for fun and to show what you CAN accomplish with Docker IRL
     # starts 4 docker containers running minio server instances.
-    # using nginx reverse proxy, load balancing, you can access
-    # it through port 8000.
+    # using an nginx reverse proxy with load balancing.  You can access
+    # it through port 8000 similar to the baby minio container.
 
 
     # Settings and configurations that are common for all containers
