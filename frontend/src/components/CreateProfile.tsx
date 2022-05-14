@@ -38,45 +38,48 @@ export const CreateProfile = () => {
   };
 
   return (
-    <div className={"form-control-sm max-w-2xs "}>
-      {submitted === SubmissionStatus.SubmitFailed &&
-        <h3>Creating Profile failed!</h3>
-      }
-      <div>
-        <label className="label doggrFlexCenter" htmlFor="name">Name</label>
-        <div className="doggrFlexCenter">
-          <input
-            className={"input input-bordered "}
-            placeholder="Name..."
-            type="text"
-            id="name"
-            required
-            value={name}
-            onChange={e => setName(e.target.value)}
-            name="name"
-          />
+    <div>
+      <div className="doggrcenter doggr-section-text">Create profile</div>
+      <div className={"form-control-sm max-w-2xs "}>
+        {submitted === SubmissionStatus.SubmitFailed &&
+            <h3>Creating Profile failed!</h3>
+        }
+        <div>
+          <label className="label doggrFlexCenter" htmlFor="name">Name</label>
+          <div className="doggrFlexCenter">
+            <input
+              className={"input input-bordered "}
+              placeholder="Name..."
+              type="text"
+              id="name"
+              required
+              value={name}
+              onChange={e => setName(e.target.value)}
+              name="name"
+            />
+          </div>
         </div>
-      </div>
 
-      <div>
-        <label
-          className={"label doggrFlexCenter"}
-          htmlFor="profilepic">Upload a profile picture (jpg/png):
-        </label>
+        <div>
+          <label
+            className={"label doggrFlexCenter"}
+            htmlFor="profilepic">Upload a profile picture (jpg/png):
+          </label>
+          <div className={"doggrFlexCenter"}>
+            <input
+              className= "doggrFileUpload"
+              type="file"
+              id="profilepic"
+              name="profilepic"
+              accept="image/png, image/jpeg"
+              onChange={onFileChange}
+            />
+          </div>
+        </div>
         <div className={"doggrFlexCenter"}>
-          <input
-            className= "doggrFileUpload"
-            type="file"
-            id="profilepic"
-            name="profilepic"
-            accept="image/png, image/jpeg"
-            onChange={onFileChange}
-          />
-        </div>
-      </div>
-      <div className={"doggrFlexCenter"}>
-        <button className="doggrbtn" onClick={onUploadFile}>Create</button>
+          <button className="doggrbtn" onClick={onUploadFile}>Create</button>
 
+        </div>
       </div>
     </div>
   );

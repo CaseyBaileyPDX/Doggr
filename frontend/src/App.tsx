@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import initialState, { getRandomProfile } from "./initialState";
 import {NotFound} from "./Components";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
 import "/public/css/doggrStyles.css";
 import Header from "./components/Header";
 import {MatchHistory} from "./components/MatchHistory";
@@ -9,6 +9,16 @@ import {Profile} from "./components/Profile";
 import {CreateUser} from "./components/CreateUser";
 import {CreateProfile} from "./components/CreateProfile";
 import {MessageBox} from "./components/Message";
+
+function Page() {
+  return (
+    <div className="doggrcenter">
+      <Header/>
+      <br/>
+      <Outlet/>
+    </div>
+  )
+}
 
 function App() {
   let [currentProfile, setCurrentProfile] = useState(initialState.currentProfile);
@@ -50,7 +60,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Header />}>
+          <Route path="/" element={<Page />}>
             <Route path="/" element={profile} />
             <Route path="match-history" element={matchHistory} />
             <Route path="create-user" element={<CreateUser />} />

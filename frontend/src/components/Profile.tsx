@@ -21,12 +21,12 @@ export function Profile(props: ProfileProps) {
   });
 
   return (
-    <div className={"doggrBox rounded-box"}>
-      <h2 className={"grid doggrcenter text-2xl text-blue-600"}>{name}</h2>
-      <img src={imgUri} className={"rounded-lg"} alt="Profile of pet"/>
-      <div className={"form-control-sm max-w-2xs doggrFlexCenter"}>
-        <button className={"doggrCircleBtn"} onClick={onPassButtonClick}>Pass</button>
-        <button className={"doggrCircleBtn"} onClick={onLikeButtonClick}>Like</button>
+    <div className="doggrBox rounded-box">
+      <h2 className="grid doggrcenter text-2xl text-blue-600">{name}</h2>
+      <img src={imgUri} className="rounded-lg doggr-profile-img" alt="Profile of pet"/>
+      <div className="form-control-sm max-w-2xs doggrFlexCenter">
+        <button className="doggrCircleBtn" onClick={onPassButtonClick}>Pass</button>
+        <button className="doggrCircleBtn" onClick={onLikeButtonClick}>Like</button>
       </div>
     </div>
   );

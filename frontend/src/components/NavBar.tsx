@@ -3,7 +3,7 @@ import React from "react";
 
 export const NavBar = () => {
   return (
-    <div className={"navbar-center"}>
+    <div className="doggr-navbar-center">
       <Link className="link-primary" to="/">Dashboard</Link>
       &nbsp; | &nbsp;
       <Link className="link-primary" to="/match-history">Match History</Link>

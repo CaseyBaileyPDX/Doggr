@@ -3,12 +3,11 @@ import React from "react";
 import {NavBar} from "./NavBar";
 
 const Header = () => {
-  return (<div className={"doggrcenter"}>
+  return (
+    <div className="doggrcenter select-none">
       <div className="header">Doggr</div>
       <div className="text-xl subheader ">Where your pets find love(tm)</div>
       <NavBar/>
-      <br/>
-      <Outlet/>
     </div>
   );
 };

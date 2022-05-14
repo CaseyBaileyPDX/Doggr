@@ -32,12 +32,17 @@ export function MatchHistoryProfile(props) {
     console.log(`Match History Profile ${name} rerendered`);
   });
 
-  return <div>
-    <img className="rounded-box object-center" src={thumbUri} alt=""/><br />
-    {name}
-    &nbsp;
-    <button className="doggrbtn" onClick={() => onUnmatchButtonClick(id)}>Unmatch</button>
-    <button className="doggrbtn" onClick={() => onMessageButtonClick(id)}>Message</button>
+  return <div className="mt-5 flex flex-row">
+    <div className="rounded-box doggr-match-history-img">
+      <img src={thumbUri} alt=""/>
+    </div>
+    <div className="w-64 flex flex-wrap justify-center">
+      <span className="ml-2">{name}</span>
+      <div className="grow-0">
+        <button className="doggrbtn" onClick={() => onUnmatchButtonClick(id)}>Unmatch</button>
+        <button className="doggrbtn" onClick={() => onMessageButtonClick(id)}>Message</button>
+      </div>
+    </div>
   </div>;
 }
 
@@ -64,8 +69,8 @@ export function MatchHistory({
   let filterBar = <FilterBar onApply={setFilterString}/>;
 
   return (
-    <div className={"doggrcenter"}>
-      <div className={"doggrcenter text-2xl underline"}>Past matches</div>
+    <div className="doggrcenter">
+      <div className="doggrcenter doggr-section-text">Past matches</div>
       {filterBar}
       <br/>
       {profilesToDisplay.map(

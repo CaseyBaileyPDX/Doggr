@@ -45,23 +45,26 @@ export const CreateUser = () => {
 
   return (
     <div>
-      {submitted ? (
-        <>     {/* If we've already submitted, show this piece*/}
-          <h4>You submitted successfully!</h4>
-          <button onClick={resetUser}>
-            Reset
-          </button>
-        </>
-      ) : (
-        <>   {/* If we've NOT already submitted, show this piece*/}
-          {submitFailed && //This will only render if our prior submit failed
-            //we could add a div here and style this separately
-            <h2>Email already exists!</h2>
-          }
-          <CreateUserForm handleInputChange={handleInputChange} saveUser={saveUser} user={user}/>
-        </>
-      )
-      }
+      <div className="doggrcenter doggr-section-text">Create user</div>
+      <div>
+        {submitted ? (
+          <>     {/* If we've already submitted, show this piece*/}
+            <h4>You submitted successfully!</h4>
+            <button onClick={resetUser}>
+              Reset
+            </button>
+          </>
+        ) : (
+          <>   {/* If we've NOT already submitted, show this piece*/}
+            {submitFailed && //This will only render if our prior submit failed
+              //we could add a div here and style this separately
+                <h2>Email already exists!</h2>
+            }
+            <CreateUserForm handleInputChange={handleInputChange} saveUser={saveUser} user={user}/>
+          </>
+        )
+        }
+      </div>
     </div>
   );
 };
