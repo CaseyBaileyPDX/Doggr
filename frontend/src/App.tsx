@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import initialState, { getRandomProfile } from "./initialState";
-import {CreateProfile, CreateUser, Header, MatchHistory, MessageBox, NotFound, Profile} from "./Components";
+import {NotFound} from "./Components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "/public/css/doggrStyles.css";
+import Header from "./components/Header";
+import {MatchHistory} from "./components/MatchHistory";
+import {Profile} from "./components/Profile";
+import {CreateUser} from "./components/CreateUser";
+import {CreateProfile} from "./components/CreateProfile";
+import {MessageBox} from "./components/Message";
 
 function App() {
   let [currentProfile, setCurrentProfile] = useState(initialState.currentProfile);

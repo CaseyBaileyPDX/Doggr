@@ -1,8 +1,10 @@
 module.exports = {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
-  darkMode: true,
+  darkMode: "media", // uses the browser's internal setting
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require("daisyui")
+  ],
 }
