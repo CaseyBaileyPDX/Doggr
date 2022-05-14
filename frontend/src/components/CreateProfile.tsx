@@ -77,7 +77,7 @@ export const CreateProfile = () => {
           </div>
         </div>
         <div className={"doggrFlexCenter"}>
-          <button className="doggrbtn" onClick={onUploadFile}>Create</button>
+          <button className="doggrbtn margin-top" onClick={onUploadFile}>Create</button>
 
         </div>
       </div>

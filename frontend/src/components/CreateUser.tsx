@@ -58,7 +58,7 @@ export const CreateUser = () => {
           <>   {/* If we've NOT already submitted, show this piece*/}
             {submitFailed && //This will only render if our prior submit failed
               //we could add a div here and style this separately
-                <h2>Email already exists!</h2>
+              <h2>Email already exists!</h2>
             }
             <CreateUserForm handleInputChange={handleInputChange} saveUser={saveUser} user={user}/>
           </>
@@ -142,10 +142,11 @@ export const CreateUserForm = ({
           name="password"
         />
       </div>
-
-      <button onClick={saveUser} type="button" className={"doggrbtn mt-2"}>
-        Create
-      </button>
+      <div className={"doggrFlexCenter"}>
+        <button onClick={saveUser} type="button" className={"doggrbtn mt-2"}>
+          Create
+        </button>
+      </div>
     </div>
   );
 };

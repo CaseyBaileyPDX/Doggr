@@ -111,3 +111,7 @@ input[type=file]:target {
     width: 75px;
     height: 75px;
 }
+
+.margin-top {
+    margin-top: 10px;
+}
