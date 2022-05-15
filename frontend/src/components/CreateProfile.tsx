@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import http from "../services/HttpService";
+import {httpClient} from "../services/HttpService";
 import {SubmissionStatus} from "../Components";
 
 export const CreateProfile = () => {
@@ -25,7 +25,7 @@ export const CreateProfile = () => {
         'content-type': 'multipart/form-data',
       },
     };
-    http.post("/createProfile", formData, config)
+    httpClient.post("/createProfile", formData, config)
       .then((response) => {
         console.log("Got response from upload file:", response.status);
         if (response.status === 200) {

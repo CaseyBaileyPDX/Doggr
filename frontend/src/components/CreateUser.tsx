@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {User} from "../services/UserService";
-import http from "../services/HttpService";
+import {httpClient} from "../services/HttpService";
 import {SubmissionStatus} from "../Components";
 
 const initialUserState = {
@@ -98,7 +98,7 @@ export const CreateUserForm = ({
         'content-type': 'multipart/form-data',
       },
     };
-    http.post("/uploadFile", formData, config)
+    httpClient.post("/uploadFile", formData, config)
       .then((response) => {
         console.log("Got response from upload file:", response.status);
         if (response.status === 200) {

@@ -1,10 +1,11 @@
-import axios from "./HttpService";
+import {httpClient} from "./HttpService";
 
 export const User = {
   async create(user) {
-    return axios.post("/users"
+    console.log("About to client post to create new user");
+    return httpClient.post("/users"
       , { email: user.email, password: user.password }
     )
-    
+
   }
 }

@@ -40,6 +40,10 @@ export default function setupRoutes(app) {
   // We're using a router now, so that we can prefix it with /api/v1 later
   const router = express.Router();
 
+  router.post("/uploadFile", Multer({storage: Multer.memoryStorage()}).single("file"), UploadFileToMinio);
+  router.post("/createProfile", Multer({storage: Multer.memoryStorage()}).single("file"), CreateProfile);
+
+  // Create user
   router.post("/users",
     checkDuplicateEmail,
     passport.authenticate("signup", { session: false }),
@@ -48,12 +52,12 @@ export default function setupRoutes(app) {
     },
   );
 
-  router.post("/uploadFile", Multer({storage: Multer.memoryStorage()}).single("file"), UploadFileToMinio);
-  router.post("/createProfile", Multer({storage: Multer.memoryStorage()}).single("file"), CreateProfile);
-
+  // Login User
   router.post(
     '/login',
     async (req, res, next) => {
+      console.log("In Login with user email {} and pw {}", req.body.email, req.body.password);
+
       passport.authenticate(
         'login',
         async (err, user, info) => {
