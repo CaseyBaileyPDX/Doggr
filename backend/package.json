@@ -9,7 +9,7 @@
     "dev": "concurrently -k \"npx tsc -w \" \"nodemon ./dist/server.js\"",
     "test": "jest --watch --detectOpenHandles",
     "lint": "eslint .",
-    "seed": "npx tsc && node dist/database/seed.js"
+    "seed": "npx sequelize db:seed:undo:all && npx sequelize db:seed:all"
   },
   "keywords": [],
   "author": "",
