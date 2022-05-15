@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import initialState, { getRandomProfile } from "./initialState";
+import React, {useEffect, useState} from 'react';
+import initialState, {getRandomProfile} from "./initialState";
 import {NotFound} from "./Components";
 import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
 import "/public/css/doggrStyles.css";
@@ -10,15 +10,21 @@ import {CreateUser} from "./components/CreateUser";
 import {CreateProfile} from "./components/CreateProfile";
 import {MessageBox} from "./components/Message";
 import {Login} from "./components/Login";
+import {AuthProvider} from "./services/AuthService";
+import {ProtectedRoute} from "./components/ProtectedRoute";
 
-function Page({token, setToken}) {
+function Page() {
   return (
     <div className="doggrcenter">
-      <Header token={token} setToken={setToken} />
+      <Header/>
       <br/>
       <Outlet/>
     </div>
-  )
+  );
+}
+
+export type FilterBarProps = {
+  onApply: (filterString: string) => void,
 }
 
 function App() {
@@ -26,15 +32,10 @@ function App() {
   let [likeHistory, setLikeHistory] = useState(initialState.likeHistory);
   let [passHistory, setPassHistory] = useState(initialState.passHistory);
 
-  const [token, setToken] = React.useState<string | null>(null);
-
   useEffect(() => {
     console.log("-- App rerenders --");
   });
 
-  const onLogout = () => {
-    setToken(null);
-  }
 
   let onLikeButtonClick = () => {
     let newLikeHistory = [...likeHistory, currentProfile];
@@ -57,32 +58,35 @@ function App() {
 
 
   let profile = <Profile {...currentProfile}
-    onLikeButtonClick={onLikeButtonClick}
-    onPassButtonClick={onPassButtonClick} />
-
-  let matchHistory = <MatchHistory likeHistory={likeHistory}
-    onUnmatchButtonClick={onUnmatchButtonClick}  />
+                         onLikeButtonClick={onLikeButtonClick}
+                         onPassButtonClick={onPassButtonClick}/>;
 
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Page token={token} setToken={setToken}/>}>
-            <Route path="/" element={profile} />
-            <Route path="match-history" element={matchHistory} />
-            <Route path="create-user" element={<CreateUser />} />
-            <Route path="create-profile" element={<CreateProfile />} />
-            <Route path="messages" element={<MessageBox />} />
-            <Route path="login" element={<Login setToken={setToken} />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
 
+      <BrowserRouter>
+        <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Page/>}>
+            <Route path="/" element={profile}/>
+              <Route path="match-history" element={
+                <ProtectedRoute>
+                  <MatchHistory likeHistory={likeHistory}
+                                onUnmatchButtonClick={onUnmatchButtonClick}/>
+                </ProtectedRoute>
+              }/>
+              <Route path="create-profile" element={<CreateProfile/>}/>
+              <Route path="messages" element={<MessageBox/>}/>
+
+            <Route path="create-user" element={<CreateUser/>}/>
+            <Route path="login" element={<Login/>}/>
+          </Route>
+          <Route path="*" element={<NotFound/>}/>
+        </Routes>
+        </AuthProvider>
       </BrowserRouter>
-    </>
+
   );
 }
-
 
 
 export default App;

@@ -1,29 +1,38 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { httpClient} from  "../services/HttpService";
-import {getLoginToken, setToken} from "../services/AuthService";
+import {AuthContext, AuthContextProps, useAuth} from "../services/AuthService";
 import React from "react";
 
+export function Login() {
 
-export type LoginProps = {
-  setToken: (token: string) => void,
-}
 
-export function Login({setToken}: LoginProps) {
+  const context = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [submitFailed, setSubmitFailed] = useState(false);
 
   async function onSubmitLogin() {
-    console.log("In submit login about to fetch login token");
-   let token = await getLoginToken(email, password);
-   console.log("Got token: ", token);
-   setToken(token);
+    if (context) {
+      let loginSuccess = await context.handleLogin(email, password);
+      if (!loginSuccess) {
+        console.log("Setting submit failed")
+        setSubmitFailed(true)
+      }
+    }
   }
 
+
   return (
-    <div>
+    <>
+      { submitFailed ? (
+          <div><h3>SUBMIT FAILED</h3></div>
+        )
+        : null }
+
       <div>
         <label htmlFor="email">Email</label>
+
         <input
           type="text"
           id="email"
@@ -46,9 +55,9 @@ export function Login({setToken}: LoginProps) {
         />
       </div>
 
-      <button onClick={onSubmitLogin}>
+      <button onClick={async () => {await onSubmitLogin();}}>
         Submit
       </button>
-    </div>
+    </>
   )
 }

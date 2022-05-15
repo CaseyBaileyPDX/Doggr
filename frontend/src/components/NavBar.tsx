@@ -1,15 +1,17 @@
 import {Link} from "react-router-dom";
 import React from "react";
-import {deleteToken} from "../services/AuthService";
+import {AuthContext, AuthContextProps, useAuth} from "../services/AuthService";
 
-export const NavBar = ({token, setToken}) => {
+export const NavBar = () => {
+
+  const context = useAuth();
 
   const handleLogout = () => {
     console.log("Setting token to null");
-    deleteToken(setToken);
+    context?.handleLogout();
   }
 
-  console.log(token);
+
 
   return (
     <div className="doggr-navbar-center">
@@ -21,7 +23,7 @@ export const NavBar = ({token, setToken}) => {
       &nbsp; | &nbsp;
       <Link className="link-primary" to="/create-profile">Create Profile</Link>
       &nbsp; | &nbsp;
-      { token !== null  ?
+      { context?.token !== null  ?
         <Link to="/" onClick={handleLogout}>Logout</Link>
          :
         <Link to="/login">Login</Link>
