@@ -74,11 +74,13 @@ function App() {
                               onUnmatchButtonClick={onUnmatchButtonClick}/>
               </ProtectedRoute>
             }/>
+
             <Route path="create-profile" element={
               <ProtectedRoute>
                 <CreateProfile/>
               </ProtectedRoute>
             }/>
+
             <Route path="messages" element={
               <ProtectedRoute>
                 <MessageBox/>
@@ -86,6 +88,7 @@ function App() {
             }/>
 
             <Route path="create-user" element={<CreateUser/>}/>
+
             <Route path="login" element={<Login/>}/>
           </Route>
           <Route path="*" element={<NotFound/>}/>

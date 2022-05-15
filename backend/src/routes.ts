@@ -81,6 +81,12 @@ export default function setupRoutes(app) {
     res.send("CONGRATS WE SURVIVED AUTH");
   });
 
+  const msgreqdump = (req, res, next) => {
+    console.log("Dumping msg headers");
+    //console.log(req);
+    next();
+  }
+
   // Req needs to have message text, sender_id, receiver_id
   router.post("/messages", CreateMessage);
 

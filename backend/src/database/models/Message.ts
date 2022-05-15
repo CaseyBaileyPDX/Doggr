@@ -1,39 +1,31 @@
-import {Table, Column, Model, HasMany, ForeignKey} from 'sequelize-typescript';
-
+import {DataTypes, Model} from "sequelize";
+import {db} from "../DBService";
 import {User} from "./User";
 
-
-@Table
-export class Message extends Model {
-  @Column
-  message_text!: string
-
-  @ForeignKey(() => User)
-  @Column
-  sender_id!: number
-
-  @ForeignKey(() => User)
-  @Column
-  receiver_id!: number
+interface MessageModelAttrs extends Model {
+  message_text: string,
+  sender_id: number,
+  receiver_id: number,
+  message_sent: string,
 }
 
-
-
-
-
-// import {DataTypes, Model} from "sequelize";
-// import { db} from "../../services/DBService";
-//
-//   export class Message extends Model {
-//     declare message_text: string;
-//     declare sender_id: number;
-//     declare receiver_id: number;
-//   }
-//   Message.init({
-//     message_text: DataTypes.STRING,
-//     sender_id: DataTypes.NUMBER,
-//     receiver_id: DataTypes.NUMBER
-//   }, {
-//     sequelize: db,
-//     modelName: 'Message',
-//   });
+export const Message = db.define<MessageModelAttrs>('profiles', {
+  message_text: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  sender_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: User,
+      key: "id",
+    },
+  },
+  receiver_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: User,
+      key: "id",
+    },
+  },
+});

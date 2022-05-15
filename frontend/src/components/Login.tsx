@@ -14,11 +14,15 @@ export function Login() {
 
   async function onSubmitLogin() {
     if (context) {
+      console.log("OnSubmitLogin :", email, password);
       let loginSuccess = await context.handleLogin(email, password);
       if (!loginSuccess) {
         console.log("Setting submit failed");
         setSubmitFailed(true);
       }
+    }
+    else {
+      console.log("Context is null");
     }
   }
 

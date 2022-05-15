@@ -4,8 +4,6 @@ import {db} from "../database/DBService";
 
 
 export const CreateMessage = async (req, res) => {
-  console.log("In create profile with req", req);
-  console.log("About to upload file");
 
   const {
     message_text,
@@ -13,9 +11,9 @@ export const CreateMessage = async (req, res) => {
     receiver_id
   } = req.body;
 
-  const msg = db.model("Message");
+  //const msg = db.model("Message");
 
-  msg.create({
+  Message.create({
     message_text,
     sender_id,
     receiver_id
