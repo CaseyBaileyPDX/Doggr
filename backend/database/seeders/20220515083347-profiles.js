@@ -1,4 +1,4 @@
-const {Profile} = require("../../dist/database/models/profile");
+const {Profile} = require("../../dist/database/models/Profile");
 
 
 module.exports = {

@@ -1,5 +1,6 @@
-import {Message} from "../database/models/message";
+import {Message} from "../database/models/Message";
 import {minioClient} from "./MinioService";
+import {db} from "../database/DBService";
 
 
 export const CreateMessage = async (req, res) => {
@@ -12,7 +13,9 @@ export const CreateMessage = async (req, res) => {
     receiver_id
   } = req.body;
 
-  Message.create({
+  const msg = db.model("Message");
+
+  msg.create({
     message_text,
     sender_id,
     receiver_id

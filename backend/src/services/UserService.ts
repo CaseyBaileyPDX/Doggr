@@ -1,5 +1,5 @@
 
-import { User } from "../database/models/user";
+import { User } from "../database/models/User";
 
 export function createUser(req, res) {
 

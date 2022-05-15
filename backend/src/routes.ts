@@ -11,7 +11,7 @@ import Minio from "minio";
 import { testMongo, testPostgres } from "./lib/helpers";
 import { checkDuplicateEmail } from "./middlewares/VerifySignUp";
 import { createUser } from "./services/UserService";
-import { db } from "./services/DBService";
+import { db } from "./database/DBService";
 import { ConfigurePassport, generateAccessToken } from "./services/AuthService";
 import AuthenticateToken from "./middlewares/AuthenticateToken";
 import { UploadFileToMinio } from "./services/MinioService";

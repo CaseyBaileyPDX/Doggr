@@ -1,7 +1,7 @@
 import {Table, Column, Model, HasMany, BeforeCreate, BeforeBulkCreate} from 'sequelize-typescript';
 import bcrypt from "bcrypt";
-import {Profile} from "./profile";
-import {Message} from "./message";
+import {Profile} from "./Profile";
+import {Message} from "./Message";
 
 
 @Table

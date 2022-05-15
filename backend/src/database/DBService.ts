@@ -1,6 +1,4 @@
-import {
-  Sequelize, DataTypes, Model, Deferrable,
-} from "sequelize";
+import {Sequelize} from 'sequelize-typescript'
 
 const pguser = process.env.PGUSER;
 const pghost = process.env.PGHOST;
@@ -10,4 +8,7 @@ const pgport = process.env.PGPORT;
 
 const connstring = `postgres://${pguser}:${pgpass}@${pghost}:${pgport}/${pgdatabase}`;
 
-export const db = new Sequelize(connstring);
+export const db = new Sequelize(connstring, {
+  dialect: 'postgres',
+  models: [__dirname + '/models']
+});
