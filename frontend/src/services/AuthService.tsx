@@ -76,13 +76,10 @@ export const AuthProvider = ({children}) => {
     console.log("Saving token");
     setToken(token);
     localStorage.setItem("token", JSON.stringify(token));
-    //add to axios as header
-    //httpClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    //let defheaders = httpClient.defaults.headers.common['Authorization'];
+    //test print payload from token
+    let payload = getPayloadFromToken(token);
+    console.log("Payload:", payload);
 
-
-
-//    console.log("Default headers are: ", defheaders);
   };
 
 
@@ -122,6 +119,18 @@ export async function getLoginTokenFromServer(email: string, password: string) {
 
   return res.data;
 }
+
+function getPayloadFromToken (token) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+
+  let payload = JSON.parse(jsonPayload);
+  console.log(payload);
+  return payload;
+};
 
 
 // See: https://github.com/remix-run/react-router/pull/8706

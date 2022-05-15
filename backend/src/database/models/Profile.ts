@@ -9,7 +9,7 @@ interface ProfileModelAttrs extends Model {
   profileUrl: string,
 }
 
-export const Profile = db.define<ProfileModelAttrs>('profiles', {
+export const Profile = db.define<ProfileModelAttrs>('Profiles', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
