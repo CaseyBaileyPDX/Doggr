@@ -63,27 +63,35 @@ function App() {
 
   return (
 
-      <BrowserRouter>
-        <AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
         <Routes>
           <Route path="/" element={<Page/>}>
             <Route path="/" element={profile}/>
-              <Route path="match-history" element={
-                <ProtectedRoute>
-                  <MatchHistory likeHistory={likeHistory}
-                                onUnmatchButtonClick={onUnmatchButtonClick}/>
-                </ProtectedRoute>
-              }/>
-              <Route path="create-profile" element={<CreateProfile/>}/>
-              <Route path="messages" element={<MessageBox/>}/>
+            <Route path="match-history" element={
+              <ProtectedRoute>
+                <MatchHistory likeHistory={likeHistory}
+                              onUnmatchButtonClick={onUnmatchButtonClick}/>
+              </ProtectedRoute>
+            }/>
+            <Route path="create-profile" element={
+              <ProtectedRoute>
+                <CreateProfile/>
+              </ProtectedRoute>
+            }/>
+            <Route path="messages" element={
+              <ProtectedRoute>
+                <MessageBox/>
+              </ProtectedRoute>
+            }/>
 
             <Route path="create-user" element={<CreateUser/>}/>
             <Route path="login" element={<Login/>}/>
           </Route>
           <Route path="*" element={<NotFound/>}/>
         </Routes>
-        </AuthProvider>
-      </BrowserRouter>
+      </AuthProvider>
+    </BrowserRouter>
 
   );
 }

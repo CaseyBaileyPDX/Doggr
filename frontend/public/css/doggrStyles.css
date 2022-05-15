@@ -94,6 +94,10 @@ input[type=file]:target {
     user-select: none;
 }
 
+.doggr-warning {
+    @apply text-3xl text-red-700 textarea-warning font-extrabold underline
+}
+
 .doggr-navbar-center {
     display: flex;
     flex: 1;

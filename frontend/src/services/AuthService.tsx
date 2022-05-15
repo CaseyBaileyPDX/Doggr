@@ -1,7 +1,7 @@
 import {httpClient} from "./HttpService";
 import React from "react";
-import {useNavigate} from "react-router-dom";
-
+import {useLocation, useNavigate} from "react-router-dom";
+import { Location } from "react-router"
 
 export type AuthContextProps = {
   token: string | null,
@@ -15,6 +15,7 @@ const initialToken: string | null = getTokenFromStorage();
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [token, setToken] = React.useState(initialToken);
 
@@ -24,16 +25,19 @@ export const AuthProvider = ({ children }) => {
       let token = await getLoginTokenFromServer(email, password);
       console.log("Got token in handle login", token);
       saveToken(token);
-      // logged in now, so we can go somewhere that requires auth!
-      navigate("/match-history");
+      /* logged in now, so we can go somewhere that requires auth!
+       we'll either go back to wherever the user was before being
+       redirected to login, or default to match-history
+       */
+      //const origin = location.state?.from?.pathname || "/match-history";
+      const origin = getPathname(location) || "/match-history";
+      navigate(origin);
       return true;
     } catch (err) {
       console.log("Failed handle login", err);
       navigate("/login");
       return false;
     }
-
-
   }
 
   const handleLogout = () => {
@@ -76,3 +80,23 @@ export async function getLoginTokenFromServer(email: string, password: string){
   return res.data;
 }
 
+
+
+// See: https://github.com/remix-run/react-router/pull/8706
+
+const isObjectWithKey = <T extends string>(
+  given: unknown,
+  key: T
+): given is Partial<Record<T, unknown>> =>
+  typeof given === 'object' && given !== null && key in given
+
+export const getPathname = (location: Location): string | undefined => {
+  const { state } = location
+  // Note that doing e.g.: const state = location.state as { from: Location }
+  // as suggested elsewhere isn't type safe and you risk runtime errors when doing it that way.
+  return isObjectWithKey(state, 'from') &&
+  isObjectWithKey(state.from, 'pathname') &&
+  typeof state.from.pathname === 'string'
+    ? state.from.pathname
+    : undefined
+}

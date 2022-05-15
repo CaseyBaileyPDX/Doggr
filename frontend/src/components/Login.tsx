@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import { httpClient} from  "../services/HttpService";
+import {httpClient} from "../services/HttpService";
 import {AuthContext, AuthContextProps, useAuth} from "../services/AuthService";
 import React from "react";
 
@@ -16,24 +16,27 @@ export function Login() {
     if (context) {
       let loginSuccess = await context.handleLogin(email, password);
       if (!loginSuccess) {
-        console.log("Setting submit failed")
-        setSubmitFailed(true)
+        console.log("Setting submit failed");
+        setSubmitFailed(true);
       }
     }
   }
 
 
   return (
-    <>
-      { submitFailed ? (
-          <div><h3>SUBMIT FAILED</h3></div>
-        )
-        : null }
-
+    <div>
+      <div className="doggrcenter doggr-section-text">Login</div>
       <div>
-        <label htmlFor="email">Email</label>
+        {submitFailed ? (
+            <div className="doggr-warning">SUBMIT FAILED!</div>
+          )
+          : null}
+      </div>
+      <div>
+        <label className="label" htmlFor="email">Email</label>
 
         <input
+          className={"input input-bordered max-w-2xs"}
           type="text"
           id="email"
           required
@@ -44,9 +47,10 @@ export function Login() {
       </div>
 
       <div>
-        <label htmlFor="password">Password</label>
+        <label className="label" htmlFor="password">Password</label>
         <input
           type="text"
+          className={"input input-bordered max-w-2xs"}
           id="password"
           required
           value={password}
@@ -55,9 +59,13 @@ export function Login() {
         />
       </div>
 
-      <button onClick={async () => {await onSubmitLogin();}}>
-        Submit
-      </button>
-    </>
-  )
+      <div className={"doggrFlexCenter"}>
+        <button className={"doggrbtn mt-2"} onClick={async () => {
+          await onSubmitLogin();
+        }}>
+          Submit
+        </button>
+      </div>
+    </div>
+  );
 }

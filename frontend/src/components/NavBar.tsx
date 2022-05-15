@@ -24,13 +24,10 @@ export const NavBar = () => {
       <Link className="link-primary" to="/create-profile">Create Profile</Link>
       &nbsp; | &nbsp;
       { context?.token !== null  ?
-        <Link to="/" onClick={handleLogout}>Logout</Link>
+        <Link className="link-primary" to="/" onClick={handleLogout}>Logout</Link>
          :
-        <Link to="/login">Login</Link>
+        <Link className="link-primary" to="/login">Login</Link>
       }
-
-
-
     </div>
   );
 };
