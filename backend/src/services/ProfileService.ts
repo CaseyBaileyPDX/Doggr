@@ -1,5 +1,6 @@
-import {db, Profile, User} from "../database/models";
-import {minioClient} from "./minioService";
+
+import { Profile } from "../database/models/profile";
+import {minioClient} from "./MinioService";
 
 
 

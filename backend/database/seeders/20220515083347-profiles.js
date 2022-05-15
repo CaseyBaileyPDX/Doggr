@@ -1,9 +1,10 @@
-const {Profile} = require("../models/index");
+const {Profile} = require("../../dist/database/models/profile");
+
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    
-    await Profile.bulkCreate([
+
+    await queryInterface.bulkInsert( "Profiles", [
       { id: 1, name: "Doggo", userId: 1, profileUrl: "profile1.jpg",createdAt: new Date(), updatedAt: new Date() },
       { id: 2, name: "Catte", userId: 2, profileUrl: "profile2.jpg" ,createdAt: new Date(), updatedAt: new Date()},
     ]);

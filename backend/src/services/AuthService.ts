@@ -2,7 +2,8 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import { Strategy as LocalStrategy } from "passport-local";
-import { db, User } from "../database/models";
+import {  User } from "../database/models/user";
+import {db} from "./DBService";
 
 export function ConfigurePassport(app) {
 

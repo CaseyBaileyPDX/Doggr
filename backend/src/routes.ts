@@ -9,13 +9,14 @@ import passport from "passport";
 import Multer from "multer";
 import Minio from "minio";
 import { testMongo, testPostgres } from "./lib/helpers";
-import { checkDuplicateEmail } from "./middlewares/verifySignUp";
-import { createUser } from "./services/userService";
-import { db } from "./database/models";
+import { checkDuplicateEmail } from "./middlewares/VerifySignUp";
+import { createUser } from "./services/UserService";
+import { db } from "./services/DBService";
 import { ConfigurePassport, generateAccessToken } from "./services/AuthService";
 import AuthenticateToken from "./middlewares/AuthenticateToken";
-import { UploadFileToMinio } from "./services/minioService";
+import { UploadFileToMinio } from "./services/MinioService";
 import { CreateProfile } from "./services/ProfileService";
+import {CreateMessage} from "./services/MessageService";
 
 const _minio = require("minio");
 
@@ -77,25 +78,7 @@ export default function setupRoutes(app) {
   });
 
   // Req needs to have message text, sender_id, receiver_id
-  router.post("/messages", async (req, res) => {
-
-    const { message_text, sender_id, receiver_id } = req.body;
-
-    try {
-      await db.query(
-        `INSERT INTO messages(sender_id, receiver_id, message_text, message_sent)
-          VALUES(?, ?, ?, ?)`,
-        {
-          replacements: [sender_id, receiver_id, message_text, new Date().toISOString()],
-          type: QueryTypes.INSERT,
-        },
-      );
-
-      res.status(200).send("Added successfully\r");
-    } catch (err) {
-      res.status(500).send(err);
-    }
-  });
+  router.post("/messages", CreateMessage);
 
   router.use("/testJson", (req, res) => {
     res.json(req.body);
