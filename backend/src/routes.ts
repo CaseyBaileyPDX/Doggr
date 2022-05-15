@@ -56,7 +56,8 @@ export default function setupRoutes(app) {
   router.post(
     '/login',
     async (req, res, next) => {
-      console.log("In Login with user email {} and pw {}", req.body.email, req.body.password);
+      console.log("IN LOGIN ROUTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      //console.log(req);
 
       passport.authenticate(
         'login',

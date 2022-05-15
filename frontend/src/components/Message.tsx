@@ -18,6 +18,7 @@ export const MessageBox = () => {
 
   async function onSubmitButtonClick() {
     if (state !== null) {
+      console.log("Submitting message: ", message);
       const result = await Message.send(message, state.sender_id, state.receiver_id);
       console.log(result);
     }

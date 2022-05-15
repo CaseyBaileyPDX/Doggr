@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {httpClient} from "../services/HttpService";
 import {AuthContext, AuthContextProps, useAuth} from "../services/AuthService";
 import React from "react";
@@ -12,19 +12,21 @@ export function Login() {
   const [password, setPassword] = useState("");
   const [submitFailed, setSubmitFailed] = useState(false);
 
-  async function onSubmitLogin() {
-    if (context) {
-      console.log("OnSubmitLogin :", email, password);
-      let loginSuccess = await context.handleLogin(email, password);
-      if (!loginSuccess) {
-        console.log("Setting submit failed");
-        setSubmitFailed(true);
+  const onSubmitLogin = useCallback(
+    async () => {
+      if (context) {
+        console.log("OnSubmitLogin :", email, password);
+        let loginSuccess = await context.handleLogin(email, password);
+        if (!loginSuccess) {
+          console.log("Setting submit failed");
+          setSubmitFailed(true);
+        }
+      }
+      else {
+        console.log("Context is null");
       }
     }
-    else {
-      console.log("Context is null");
-    }
-  }
+    , [email, password, context, setSubmitFailed])
 
 
   return (
@@ -64,9 +66,10 @@ export function Login() {
       </div>
 
       <div className={"doggrFlexCenter"}>
-        <button className={"doggrbtn mt-2"} onClick={async () => {
-          await onSubmitLogin();
-        }}>
+        {/*<button className={"doggrbtn mt-2"} onClick={async () => {*/}
+        {/*  await onSubmitLogin();*/}
+        {/*}}>*/}
+        <button className={"doggrbtn mt-2"} onClick={onSubmitLogin}>
           Submit
         </button>
       </div>

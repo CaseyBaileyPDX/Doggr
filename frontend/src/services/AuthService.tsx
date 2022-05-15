@@ -16,11 +16,9 @@ const updateAxios = async(token) => {
   httpClient.interceptors.request.use(
     async config => {
 
-
       config.headers = {
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
       };
 
       return config;

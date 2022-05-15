@@ -23,7 +23,7 @@ export const NavBar = () => {
       &nbsp; | &nbsp;
       <Link className="link-primary" to="/create-profile">Create Profile</Link>
       &nbsp; | &nbsp;
-      { context?.token !== null  ?
+      { context?.token != null  ?
         <Link className="link-primary" to="/" onClick={handleLogout}>Logout</Link>
          :
         <Link className="link-primary" to="/login">Login</Link>
