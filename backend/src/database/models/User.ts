@@ -7,10 +7,11 @@ interface UserModelAttrs extends Model {
   password: string,
 }
 
-export const User = db.define<UserModelAttrs>('users', {
+export const User = db.define<UserModelAttrs>('Users', {
   email: {
     type: DataTypes.STRING,
     allowNull: false,
+    primaryKey: true,
     unique: true,
   },
   password: {
@@ -24,6 +25,14 @@ export const User = db.define<UserModelAttrs>('users', {
       console.log("Hashing user pw: ", user.password);
       user.password = await bcrypt.hash(user.password, 10);
       console.log("Hashed pw: ", user.password);
+    },
+    beforeBulkCreate: async (users: [UserModelAttrs]) => {
+
+      for (let i = 0; i < users.length ; i++) {
+        console.log("Hashing user pw: ", users[i].password);
+        users[i].password = await bcrypt.hash(users[i].password, 10);
+        console.log("Hashed pw: ", users[i].password);
+      }
     },
   },
 });

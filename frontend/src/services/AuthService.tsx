@@ -120,7 +120,7 @@ export async function getLoginTokenFromServer(email: string, password: string) {
   return res.data;
 }
 
-function getPayloadFromToken (token) {
+export function getPayloadFromToken (token) {
   const base64Url = token.split('.')[1];
   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
   const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {

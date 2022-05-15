@@ -15,17 +15,17 @@ export const Message = db.define<MessageModelAttrs>('Messages', {
     allowNull: false,
   },
   sender_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     references: {
       model: User,
-      key: "id",
+      key: "email",
     },
   },
   receiver_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     references: {
       model: User,
-      key: "id",
+      key: "email",
     },
   },
 });

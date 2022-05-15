@@ -16,12 +16,12 @@ export const Profile = db.define<ProfileModelAttrs>('Profiles', {
     unique: true,
   },
   userId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
 
     // This creates foreign key constraint
     references: {
       model: User,
-      key: "id",
+      key: "email",
     },
   },
   //this links to minio name

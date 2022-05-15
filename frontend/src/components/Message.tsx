@@ -2,11 +2,13 @@ import {useLocation} from "react-router-dom";
 import {MsgBoxState} from "./MatchHistory";
 import React, {useState} from "react";
 import {Message} from "../services/MessageService";
+import {getPayloadFromToken, useAuth} from "../services/AuthService";
 
 export const MessageBox = () => {
 
   //useNavigate("/messages") lands here
   const state = useLocation().state as MsgBoxState;
+  const context = useAuth();
 
   const [message, setMessage] = useState("");
 
@@ -19,7 +21,10 @@ export const MessageBox = () => {
   async function onSubmitButtonClick() {
     if (state !== null) {
       console.log("Submitting message: ", message);
-      const result = await Message.send(message, state.sender_id, state.receiver_id);
+      let payload = getPayloadFromToken(context?.token);
+      let senderId = payload.id;
+      console.log("SENDER ID FROM PAYLOAD IS", senderId);
+      const result = await Message.send(message, senderId, "b");
       console.log(result);
     }
   }

@@ -13,6 +13,7 @@ const SeedUsers = async () => {
     { email: "test@gmail.com", password: "123456" },
     { email: "test2@email.com", password: "password" },
     { email: "a", password: "a" },
+    { email: "b", password: "b" },
   ];
 
   // force true will drop the table if it already exists
@@ -43,9 +44,9 @@ const SeedMessages = async () => {
   console.log("Beginning seed messages");
 
   const messageSeedData = [
-    { message_text: "hi from first seed message", sender_id: 1, receiver_id: 2 },
-    { message_text: "hi from second seed message", sender_id: 2, receiver_id: 1 },
-    { message_text: "hi from third seed message", sender_id: 1, receiver_id: 2 },
+    { message_text: "hi from first seed message", sender_id: "a", receiver_id: "b" },
+    { message_text: "hi from second seed message", sender_id: "b", receiver_id: "a" },
+    { message_text: "hi from third seed message", sender_id: "a", receiver_id: "b" },
   ];
 
   await Message.sync({ force: true });
@@ -70,8 +71,8 @@ async function SeedProfiles() {
   await Profile.sync({ force: true });
 
   const profileSeedData = [
-    { name: "Doggo", userId: 1, profileUrl: "profile1.jpg" },
-    { name: "Catte", userId: 2, profileUrl: "profile2.jpg" },
+    { name: "Doggo", userId: "a", profileUrl: "profile1.jpg" },
+    { name: "Catte", userId: "b", profileUrl: "profile2.jpg" },
   ];
 
   await Profile.bulkCreate(profileSeedData, { validate: true })
