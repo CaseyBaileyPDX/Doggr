@@ -4,6 +4,8 @@ import {SubmissionStatus} from "../Components";
 
 export const CreateProfile = () => {
 
+
+
   const [selectedFile, setSelectedFile] = useState();
   const [name, setName] = useState("");
   const [submitted, setSubmitted] = useState(SubmissionStatus.NotSubmitted);
@@ -76,10 +78,14 @@ export const CreateProfile = () => {
             />
           </div>
         </div>
-        <div className={"doggrFlexCenter"}>
+        { name != null && selectedFile != null &&
+
+
+          <div className={"doggrFlexCenter"}>
           <button className="doggrbtn margin-top" onClick={onUploadFile}>Create</button>
 
-        </div>
+          </div>
+        }
       </div>
     </div>
   );

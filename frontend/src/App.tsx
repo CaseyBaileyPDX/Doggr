@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import initialState from "./initialState";
-import {NotFound} from "./Components";
 import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
 import "/public/css/doggrStyles.css";
 import Header from "./components/Header";
@@ -15,6 +14,7 @@ import {ProtectedRoute} from "./components/ProtectedRoute";
 import {getRandomProfile} from "./services/ProfileService";
 import getInitialState from "./initialState";
 import {Profile as ProfileType} from "./types/StateTypes";
+import {NotFound} from "./components/NotFound";
 
 function Page() {
   return (

@@ -5,7 +5,6 @@ import React from "react";
 
 export function Login() {
 
-
   const context = useAuth();
 
   const [email, setEmail] = useState("");

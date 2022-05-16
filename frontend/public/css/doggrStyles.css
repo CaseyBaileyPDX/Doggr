@@ -14,7 +14,7 @@ svg { position:fixed; top:0; bottom:0; left:0; right:0 }
 }
 
 .doggrbtn {
-    @apply btn sm:btn-sm md:btn-sm lg:btn-sm;
+    @apply btn sm:btn-sm md:btn-sm lg:btn-lg;
     @apply ml-2;
 }
 

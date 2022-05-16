@@ -12,6 +12,7 @@ import {useAuth} from "../services/AuthService";
 export const ProtectedRoute = ({children}) => {
   const context = useAuth();
   const location = useLocation();
+
   if (!context?.token) {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }

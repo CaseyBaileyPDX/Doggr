@@ -3,6 +3,9 @@ import React from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {Location} from "react-router";
 
+// https://www.robinwieruch.de/react-router-authentication/
+// PLEASE SEE HERE FOR IN-DEPTH EXPLANATIONS
+
 export type AuthContextProps = {
   token: string | null,
   handleLogin: (email: string, password: string) => Promise<boolean>,
@@ -27,7 +30,6 @@ const updateAxios = async(token) => {
       console.log("REJECTED PROMISE");
       Promise.reject(error);
     });
-
 }
 
 const initialToken: string | null = getTokenFromStorage();
@@ -37,6 +39,7 @@ if (initialToken) {
 }
 
 export const AuthProvider = ({children}) => {
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -76,14 +79,7 @@ export const AuthProvider = ({children}) => {
     console.log("Saving token");
     setToken(token);
     localStorage.setItem("token", JSON.stringify(token));
-    //test print payload from token
-    let payload = getPayloadFromToken(token);
-    console.log("Payload:", payload);
-
   };
-
-
-
 
   return (
     <AuthContext.Provider value={{
@@ -96,12 +92,9 @@ export const AuthProvider = ({children}) => {
   );
 };
 
-
-
 export const useAuth = () => {
   return React.useContext(AuthContext);
 };
-
 
 export function getTokenFromStorage() {
   const tokenString = localStorage.getItem('token');
