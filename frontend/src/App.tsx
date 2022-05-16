@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import initialState, {getRandomProfile} from "./initialState";
+import initialState from "./initialState";
 import {NotFound} from "./Components";
 import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
 import "/public/css/doggrStyles.css";
@@ -12,6 +12,9 @@ import {MessageBox} from "./components/Message";
 import {Login} from "./components/Login";
 import {AuthProvider} from "./services/AuthService";
 import {ProtectedRoute} from "./components/ProtectedRoute";
+import {getRandomProfile} from "./services/ProfileService";
+import getInitialState from "./initialState";
+import {Profile as ProfileType} from "./types/StateTypes";
 
 function Page() {
   return (
@@ -28,27 +31,47 @@ export type FilterBarProps = {
 }
 
 function App() {
-  let [currentProfile, setCurrentProfile] = useState(initialState.currentProfile);
-  let [likeHistory, setLikeHistory] = useState(initialState.likeHistory);
-  let [passHistory, setPassHistory] = useState(initialState.passHistory);
+  let [currentProfile, setCurrentProfile] = useState<ProfileType | null>(null);
+  let [likeHistory, setLikeHistory] = useState<Array<ProfileType>>([]);
+  let [passHistory, setPassHistory] = useState<Array<ProfileType>>([]);
+
+  // empty dep, runs only on startup
+  useEffect(() => {
+    let init = async () => {
+      let initialState = await getInitialState();
+      setCurrentProfile(initialState.currentProfile);
+      setLikeHistory(initialState.likeHistory);
+      setPassHistory(initialState.passHistory);
+    }
+    init();
+  }, [])
 
   useEffect(() => {
-    console.log("-- App rerenders --");
+    console.log("-- current profile --");
+    console.log(currentProfile); // tf why is this a promise
   });
 
 
-  let onLikeButtonClick = () => {
-    let newLikeHistory = [...likeHistory, currentProfile];
-    let newProfile = getRandomProfile();
-    setCurrentProfile(newProfile);
-    setLikeHistory(newLikeHistory);
+  let onLikeButtonClick = async() => {
+    let newLikeHistory = [...likeHistory, currentProfile!];
+    // `any` justification - I'm on hour 20 straight
+    let newProfile: any = await getRandomProfile();
+    getRandomProfile().then(
+      (newProfile) => {
+        setCurrentProfile(newProfile);
+        setLikeHistory(newLikeHistory);
+      }
+    );
   };
 
   let onPassButtonClick = () => {
-    let newPassHistory = [...passHistory, currentProfile];
-    let newCurrentProfile = getRandomProfile();
-    setPassHistory(newPassHistory);
-    setCurrentProfile(newCurrentProfile);
+    let newPassHistory = [...passHistory, currentProfile!];
+    getRandomProfile().then(
+      (newProfile) => {
+        setPassHistory(newPassHistory);
+        setCurrentProfile(newProfile);
+      }
+    );
   };
 
   let onUnmatchButtonClick = (id: number) => {
@@ -57,7 +80,7 @@ function App() {
   };
 
 
-  let profile = <Profile {...currentProfile}
+  let profile = <Profile {...currentProfile!}
                          onLikeButtonClick={onLikeButtonClick}
                          onPassButtonClick={onPassButtonClick}/>;
 

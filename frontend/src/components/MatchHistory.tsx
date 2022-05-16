@@ -13,8 +13,9 @@ export type MatchHistoryProfileProps = ProfileType & { onUnmatchButtonClick: (id
 export function MatchHistoryProfile(props) {
   let {
     id,
-    thumbUri,
+    profileUrl,
     name,
+    userId,
     onUnmatchButtonClick
   } = props;
 
@@ -34,10 +35,10 @@ export function MatchHistoryProfile(props) {
 
   return <div className="mt-5 flex flex-row">
     <div className="rounded-box doggr-match-history-img">
-      <img src={thumbUri} alt=""/>
+      <img src={profileUrl} alt=""/>
     </div>
     <div className="w-64 flex flex-wrap justify-center">
-      <span className="ml-2">{name}</span>
+      <span className="w-64 ml-2 text-center">{name}</span>
       <div className="grow-0">
         <button className="doggrbtn" onClick={() => onUnmatchButtonClick(id)}>Unmatch</button>
         <button className="doggrbtn" onClick={() => onMessageButtonClick(id)}>Message</button>
@@ -77,7 +78,7 @@ export function MatchHistory({
         profile =>
           <MatchHistoryProfile
             onUnmatchButtonClick={onUnmatchButtonClick}
-            key={profile.id}
+            key={profile.name}
             {...profile} />
       )}
     </div>

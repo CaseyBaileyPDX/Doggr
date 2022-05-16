@@ -1,7 +1,10 @@
 import {httpClient} from "./HttpService";
 
 
-export async function GetRandomProfile(){
-  const profile: any = await httpClient.get("/randomProfile");
+export async function getRandomProfile(){
+  let res = await httpClient.get("/randomProfile");
 
+  let data = await res.data;
+  console.log(data);
+  return data;
 }

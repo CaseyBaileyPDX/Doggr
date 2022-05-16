@@ -7,7 +7,7 @@ import {QueryTypes} from "sequelize";
 export const GetRandomProfile = async () => {
   let profile= await db.query(" SELECT * FROM profiles ORDER BY RANDOM() LIMIT 1;", { type: QueryTypes.SELECT });
   console.log(profile);
-  return profile;
+  return profile[0];
 }
 
   export const CreateProfile = async (req, res) => {
@@ -27,7 +27,7 @@ export const GetRandomProfile = async () => {
     const name = req.body.name;
     // This is dangerous because we're letting file names collide, but o well
     // TODO: Hash this
-    const profileUrl = req.file.originalname;
+    const profileUrl = "http://localhost:8000/doggr/" +req.file.originalname;
     console.log(`in createuser with ${name}:${profileUrl}`);
     Profile.create({
       name,

@@ -5,8 +5,8 @@ export type State = {
 };
 
 export type Profile = {
-  imgUri: string,
-  thumbUri: string,
-  name: string,
   id: number,
+  name: string,
+  userId: string,
+  profileUrl: string,
 }

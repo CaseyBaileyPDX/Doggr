@@ -99,14 +99,14 @@ async function SeedProfiles() {
 
   const profileSeedData = [
     {
-      name: "Doggo",
+      name: "Catte",
       userId: "a",
-      profileUrl: "profile1.jpg"
+      profileUrl: "http://localhost:8000/doggr/profile1.jpg"
     },
     {
-      name: "Catte",
+      name: "Doggo",
       userId: "b",
-      profileUrl: "profile2.jpg"
+      profileUrl: "http://localhost:8000/doggr/profile2.jpg"
     },
   ];
 

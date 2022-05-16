@@ -98,7 +98,7 @@ export default function setupRoutes(app) {
   }
 
   // Req needs to have message text, sender_id, receiver_id
-  router.post("/messages", CreateMessage);
+  router.post("/messages", AuthenticateToken, CreateMessage);
 
   router.use("/testJson", (req, res) => {
     res.json(req.body);
