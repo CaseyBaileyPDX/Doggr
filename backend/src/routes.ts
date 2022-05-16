@@ -42,7 +42,9 @@ export default function setupRoutes(app) {
   // We're using a router now, so that we can prefix it with /api/v1 later
   const router = express.Router();
 
+  // File upload
   router.post("/uploadFile", Multer({storage: Multer.memoryStorage()}).single("file"), UploadFileToMinio);
+
   router.post("/createProfile", Multer({storage: Multer.memoryStorage()}).single("file"), CreateProfile);
 
   // Create user

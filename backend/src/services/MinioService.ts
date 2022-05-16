@@ -11,6 +11,7 @@ export const minioClient = new _minio.Client({
   secretKey: process.env.MINIO_PASS,
 });
 
+
 export const UploadFileToMinio = async (req, res) => {
   console.log("About to upload file");
   await minioClient.putObject("doggr", req.file.originalname, req.file.buffer, (error, etag) => {
