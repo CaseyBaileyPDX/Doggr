@@ -7,7 +7,7 @@ interface UserModelAttrs extends Model {
   password: string,
 }
 
-export const User = db.define<UserModelAttrs>('Users', {
+export const User = db.define<UserModelAttrs>('users', {
   email: {
     type: DataTypes.STRING,
     allowNull: false,

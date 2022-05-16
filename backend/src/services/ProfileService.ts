@@ -1,8 +1,14 @@
 
 import { Profile } from "../database/models/Profile";
 import {minioClient} from "./MinioService";
+import { db } from "../database/DBService"
+import {QueryTypes} from "sequelize";
 
-
+export const GetRandomProfile = async () => {
+  let profile= await db.query(" SELECT * FROM profiles ORDER BY RANDOM() LIMIT 1;", { type: QueryTypes.SELECT });
+  console.log(profile);
+  return profile;
+}
 
   export const CreateProfile = async (req, res) => {
     console.log("In create profile with req", req);

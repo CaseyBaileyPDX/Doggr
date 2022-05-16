@@ -15,7 +15,7 @@ import { db } from "./database/DBService";
 import { ConfigurePassport, generateAccessToken } from "./services/AuthService";
 import AuthenticateToken from "./middlewares/AuthenticateToken";
 import { UploadFileToMinio } from "./services/MinioService";
-import { CreateProfile } from "./services/ProfileService";
+import {CreateProfile, GetRandomProfile} from "./services/ProfileService";
 import {CreateMessage} from "./services/MessageService";
 
 const _minio = require("minio");
@@ -37,6 +37,8 @@ export default function setupRoutes(app) {
 
   ConfigurePassport(app);
 
+
+
   // We're using a router now, so that we can prefix it with /api/v1 later
   const router = express.Router();
 
@@ -51,6 +53,13 @@ export default function setupRoutes(app) {
       res.json({ message: "Signup success" });
     },
   );
+
+
+
+  router.get("/randomProfile", async (req, res) => {
+
+    res.status(200).json(await GetRandomProfile());
+  });
 
   // Login User
   router.post(

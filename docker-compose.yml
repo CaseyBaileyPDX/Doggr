@@ -24,6 +24,8 @@ services:
         ports:  # NOTE!  HERE WE'RE CHANGING THE PORT FROM 9000 TO 8000 because our backend already uses 9000
             - '8000:9000'
             - '8001:9001'
+        environment:
+            - MINIO_DEFAULT_BUCKETS=doggr:public
         volumes:
             - './minio:/data'
 #     backend:

@@ -9,7 +9,7 @@ interface MessageModelAttrs extends Model {
   message_sent: string,
 }
 
-export const Message = db.define<MessageModelAttrs>('Messages', {
+export const Message = db.define<MessageModelAttrs>('messages', {
   message_text: {
     type: DataTypes.STRING,
     allowNull: false,
