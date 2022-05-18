@@ -1,8 +1,9 @@
-import { db, User } from "../database/models";
+import {  User } from "../database/models/User";
+import {db} from "../database/DBService";
 
 export const checkDuplicateEmail = (req, res, next) => {
   console.log("Checking duplicate email");
-  console.log(req.body);
+  console.log(req);
   // Username
   User.findOne({
     where: {

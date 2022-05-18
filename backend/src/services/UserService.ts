@@ -1,4 +1,5 @@
-import { db, User } from "../database/models";
+
+import { User } from "../database/models/User";
 
 export function createUser(req, res) {
 

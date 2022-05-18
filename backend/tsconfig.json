@@ -12,6 +12,8 @@
     "declaration": true,
     "sourceMap": true,
     "allowJs": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "noImplicitAny": false,
@@ -24,5 +26,9 @@
   "include": [
     "src/server.ts",
     "src/**/*",
+  ],
+  "exclude": [
+    //"src/database/**/*",
+    "src/database/models/index.js"
   ]
 }
