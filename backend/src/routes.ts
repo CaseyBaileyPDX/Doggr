@@ -56,8 +56,6 @@ export default function setupRoutes(app) {
     },
   );
 
-
-
   router.get("/randomProfile", async (req, res) => {
 
     res.status(200).json(await GetRandomProfile());

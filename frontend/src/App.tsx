@@ -31,11 +31,12 @@ export type FilterBarProps = {
 }
 
 function App() {
+ 
   let [currentProfile, setCurrentProfile] = useState<ProfileType | null>(null);
   let [likeHistory, setLikeHistory] = useState<Array<ProfileType>>([]);
   let [passHistory, setPassHistory] = useState<Array<ProfileType>>([]);
 
-  // empty dep, runs only on startup
+  // empty deps, runs only on startup
   useEffect(() => {
     let init = async () => {
       let initialState = await getInitialState();
@@ -46,16 +47,15 @@ function App() {
     init();
   }, [])
 
+  //Runs every time App rerenders
   useEffect(() => {
     console.log("-- current profile --");
-    console.log(currentProfile); // tf why is this a promise
+    console.log(currentProfile); 
   });
 
-
   let onLikeButtonClick = async() => {
-    let newLikeHistory = [...likeHistory, currentProfile!];
-    // `any` justification - I'm on hour 20 straight
-    let newProfile: any = await getRandomProfile();
+    let newLikeHistory = [...likeHistory, currentProfile!];    
+    
     getRandomProfile().then(
       (newProfile) => {
         setCurrentProfile(newProfile);
@@ -85,12 +85,11 @@ function App() {
                          onPassButtonClick={onPassButtonClick}/>;
 
   return (
-
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Page/>}>
-            <Route path="/" element={profile}/>
+          <Route path="/" element={<Page />}>
+          
             <Route path="match-history" element={
               <ProtectedRoute>
                 <MatchHistory likeHistory={likeHistory}
@@ -110,17 +109,18 @@ function App() {
               </ProtectedRoute>
             }/>
 
+            
             <Route path="create-user" element={<CreateUser/>}/>
 
-            <Route path="login" element={<Login/>}/>
+            <Route path="login" element={              
+              <Login />
+            } />
           </Route>
           <Route path="*" element={<NotFound/>}/>
         </Routes>
       </AuthProvider>
     </BrowserRouter>
-
   );
 }
-
 
 export default App;

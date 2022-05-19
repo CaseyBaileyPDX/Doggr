@@ -1,8 +1,8 @@
-import {useLocation} from "react-router-dom";
-import {MsgBoxState} from "./MatchHistory";
-import React, {useState} from "react";
-import {Message} from "../services/MessageService";
-import {getPayloadFromToken, useAuth} from "../services/AuthService";
+import { useLocation } from "react-router-dom";
+import { MsgBoxState } from "./MatchHistory";
+import React, { useState } from "react";
+import { Message } from "../services/MessageService";
+import { getPayloadFromToken, useAuth } from "../services/AuthService";
 
 export const MessageBox = () => {
 
@@ -31,19 +31,23 @@ export const MessageBox = () => {
 
   return (
     <div>
-      <label htmlFor="message">Message</label>
+      <label className="label" htmlFor="message">Message</label>
       <input
+        className={"input input-bordered max-w-2xs"}
         type="text"
         id="message"
+        placeholder="Message..."
         required
         value={message}
         onChange={handleMessageChange}
         name="message"
       />
-      <br/>
-      <button onClick={onSubmitButtonClick}>
-        Submit
-      </button>
+      <br />
+      <div className="doggrFlexCenter">
+        <button className={"doggrbtn mt-2"} onClick={onSubmitButtonClick}>
+          Submit
+        </button>
+      </div>
     </div>
   );
 };

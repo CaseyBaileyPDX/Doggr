@@ -1,1 +1,14 @@
-You'll need to set up your .env files appropriately.  Copy either the .env.local.example or .env.docker.example to `.env` and change variables appropriately in backend/ and frontend/ both.
+INITIAL SETUP
+
+1.  You'll need to set up your .env files appropriately.
+    Copy either the .env.local.example or .env.docker.example to `.env`
+    and change variables appropriately in backend/ and frontend/ both.
+
+2. Install frontend/backend packages by executing `npm install` in each subdir
+3. From the BASE /Doggr folder, execute the following:
+`sudo rm -rf ./minio && mkdir minio && sudo chown 1001 ./minio`
+4. Build your containers with `docker-compose up`
+5. Seed everything: From /backend, execute `npm run seed`
+6. Bring up back/frontend by executing `npm run dev` in each
+
+Test via http://localhost:3000

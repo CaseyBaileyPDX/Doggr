@@ -12,19 +12,19 @@ const SeedUsers = async () => {
   const userSeedData = [
     {
       email: "test@gmail.com",
-      password: "123456"
+      password: "123456",
     },
     {
       email: "test2@email.com",
-      password: "password"
+      password: "password",
     },
     {
       email: "a",
-      password: "a"
+      password: "a",
     },
     {
       email: "b",
-      password: "b"
+      password: "b",
     },
   ];
 
@@ -45,7 +45,7 @@ const SeedUsers = async () => {
 
   await User.create({
     email: "athirdemail@aol.com",
-    password: "123456"
+    password: "123456",
   })
     .then(() => {
       console.log("Created single user");
@@ -63,17 +63,17 @@ const SeedMessages = async () => {
     {
       message_text: "hi from first seed message",
       sender_id: "a",
-      receiver_id: "b"
+      receiver_id: "b",
     },
     {
       message_text: "hi from second seed message",
       sender_id: "b",
-      receiver_id: "a"
+      receiver_id: "a",
     },
     {
       message_text: "hi from third seed message",
       sender_id: "a",
-      receiver_id: "b"
+      receiver_id: "b",
     },
   ];
 
@@ -101,12 +101,12 @@ async function SeedProfiles() {
     {
       name: "Catte",
       userId: "a",
-      profileUrl: "http://localhost:8000/doggr/profile1.jpg"
+      profileUrl: "http://localhost:8000/doggr/profile1.jpg",
     },
     {
       name: "Doggo",
       userId: "b",
-      profileUrl: "http://localhost:8000/doggr/profile2.jpg"
+      profileUrl: "http://localhost:8000/doggr/profile2.jpg",
     },
   ];
 
@@ -124,16 +124,12 @@ const SeedMinio = async () => {
   console.log("in seed minio");
 
   const makeBucket = async () => {
-
     minioClient.makeBucket("doggr", "localhost", async (err) => {
       if (err) {
         console.log("Couldn't make bucket", err);
         return;
       }
-
       console.log("Made bucket");
-
-
     });
   };
 

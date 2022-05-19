@@ -1,13 +1,5 @@
-import random from "lodash.random";
-import { State, Profile } from "./types/StateTypes";
+import { State } from "./types/StateTypes";
 import {getRandomProfile} from "./services/ProfileService";
-
-//
-// const initialState: any = {
-//   currentProfile: await getRandomProfile(),
-//   likeHistory: [], // change these to use database random
-//   passHistory: [],
-// };
 
 async function getInitialState(): Promise<State> {
   return {
