@@ -1,50 +1,29 @@
-/* eslint-disable camelcase */
 import cors from "cors";
 import { promises as fs } from "fs";
 import path from "path";
-import { QueryTypes } from "sequelize";
 import express from "express";
 import passport from "passport";
-//import fileUpload from "express-fileupload";
 import Multer from "multer";
-import Minio from "minio";
-import { testMongo, testPostgres } from "./lib/helpers";
 import { checkDuplicateEmail } from "./middlewares/VerifySignUp";
-import { createUser } from "./services/UserService";
-import { db } from "./database/DBService";
 import { ConfigurePassport, generateAccessToken } from "./services/AuthService";
 import AuthenticateToken from "./middlewares/AuthenticateToken";
 import { UploadFileToMinio } from "./services/MinioService";
 import {CreateProfile, GetRandomProfile} from "./services/ProfileService";
 import {CreateMessage} from "./services/MessageService";
 
-const _minio = require("minio");
-
-const minioClient = new _minio.Client({
-  endPoint: 'localhost',
-  port: 8000,
-  useSSL: false,
-  accessKey: 'minioadmin',
-  secretKey: 'minioadmin',
-});
-
-
 export default function setupRoutes(app) {
 
+  //Set up our middleware utilities
   app.use(cors());
   app.use(express.json());
-  //app.use(fileUpload());
 
+  //Set up our Passport strategies for login/signup
   ConfigurePassport(app);
-
-
 
   // We're using a router now, so that we can prefix it with /api/v1 later
   const router = express.Router();
 
-  // File upload
-  router.post("/uploadFile", Multer({storage: Multer.memoryStorage()}).single("file"), UploadFileToMinio);
-
+  // Create new profile
   router.post("/createProfile", Multer({storage: Multer.memoryStorage()}).single("file"), CreateProfile);
 
   // Create user
@@ -56,8 +35,8 @@ export default function setupRoutes(app) {
     },
   );
 
+  // Return random profile from the database
   router.get("/randomProfile", async (req, res) => {
-
     res.status(200).json(await GetRandomProfile());
   });
 
@@ -65,9 +44,6 @@ export default function setupRoutes(app) {
   router.post(
     '/login',
     async (req, res, next) => {
-      console.log("IN LOGIN ROUTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-      //console.log(req);
-
       passport.authenticate(
         'login',
         async (err, user, info) => {
@@ -87,37 +63,17 @@ export default function setupRoutes(app) {
     },
   );
 
+  // Generic test route, only returns 200 if the client token authenticates
   router.post("/authTest", AuthenticateToken, (req, res) => {
-    res.send("CONGRATS WE SURVIVED AUTH");
+    res.status(200).send("Authenticated");
   });
-
-  const msgreqdump = (req, res, next) => {
-    console.log("Dumping msg headers");
-    //console.log(req);
-    next();
-  }
 
   // Req needs to have message text, sender_id, receiver_id
   router.post("/messages", AuthenticateToken, CreateMessage);
 
-  router.use("/testJson", (req, res) => {
-    res.json(req.body);
-  });
-
   router.get("/about", async (req, res) => {
     res.status(200).send("about:GET");
   });
-
-  router.get("/testMongo", async (req, res) => {
-    let mongoinfo = await testMongo();
-    res.json(mongoinfo);
-  });
-
-  // actually getting localhost:9000/api/v1/testPostgres
-  router.get("/testPostgres", async (req, res) => {
-    res.json(await testPostgres());
-  });
-
 
   // This will redirect all requests made to /api/vi/... to the router
   app.use("/api/v1", router);

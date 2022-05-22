@@ -9,6 +9,7 @@ import {db} from "./DBService";
 const SeedUsers = async () => {
   console.log("Beginning seed");
 
+  // Data that our 'Users' table will contain initially
   const userSeedData = [
     {
       email: "test@gmail.com",
