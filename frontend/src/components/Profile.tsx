@@ -1,5 +1,6 @@
 import React, {useEffect} from "react";
-import {useAuth} from "../services/AuthService";
+import {getPayloadFromToken, useAuth} from "../services/AuthService";
+import {Match} from "../services/MatchService";
 
 export type ProfileProps = {
   id: number,
@@ -19,7 +20,15 @@ export function Profile(props: ProfileProps) {
     onPassButtonClick
   } = props;
 
+  const sendMatch = async () => {
+    onLikeButtonClick();
+    console.log("Sending match");
+    let payload = getPayloadFromToken(context?.token);
+    let senderId = payload.id;
+    console.log(senderId);
+    const result = await Match.send( senderId, "b");
 
+  }
 
   useEffect(() => {
     console.log("Profile rerendered");
@@ -33,7 +42,7 @@ export function Profile(props: ProfileProps) {
         (
           <div className="form-control-sm max-w-2xs doggrFlexCenter">
             <button className="doggrCircleBtn" onClick={onPassButtonClick}>Pass</button>
-            <button className="doggrCircleBtn" onClick={onLikeButtonClick}>Like</button>
+            <button className="doggrCircleBtn" onClick={sendMatch}>Like</button>
           </div>
         ) : null
       }

@@ -2,6 +2,9 @@ import {Profile as ProfileType} from "../types/StateTypes";
 import {useNavigate} from "react-router-dom";
 import React, {useEffect, useMemo, useState} from "react";
 import {FilterBar} from "./FilterBar";
+import {getPayloadFromToken, useAuth} from "../services/AuthService";
+import {Message} from "../services/MessageService";
+import {Match} from "../services/MatchService";
 
 export type MsgBoxState = {
   sender_id: number,
@@ -11,6 +14,7 @@ export type MsgBoxState = {
 export type MatchHistoryProfileProps = ProfileType & { onUnmatchButtonClick: (id: number) => void }
 
 export function MatchHistoryProfile(props) {
+  const context = useAuth();
   let {
     id,
     profileUrl,
@@ -18,6 +22,8 @@ export function MatchHistoryProfile(props) {
     userId,
     onUnmatchButtonClick
   } = props;
+
+
 
   const navigate = useNavigate();
 

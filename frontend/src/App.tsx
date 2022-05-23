@@ -9,12 +9,13 @@ import { CreateUser } from "./components/CreateUser";
 import { CreateProfile } from "./components/CreateProfile";
 import { MessageBox } from "./components/Message";
 import { Login } from "./components/Login";
-import { AuthProvider } from "./services/AuthService";
+import {AuthProvider, getPayloadFromToken} from "./services/AuthService";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { getRandomProfile } from "./services/ProfileService";
 import getInitialState from "./initialState";
 import { Profile as ProfileType } from "./types/StateTypes";
 import { NotFound } from "./components/NotFound";
+import {Message} from "./services/MessageService";
 
 function Page() {
   return (
@@ -57,13 +58,16 @@ function App() {
     console.log(currentProfile);
   });
 
+
+
   let onLikeButtonClick = async () => {
     let newLikeHistory = [...likeHistory, currentProfile!];
 
     getRandomProfile().then(
-      (newProfile) => {
+      async (newProfile) => {
         setCurrentProfile(newProfile);
-        setLikeHistory(newLikeHistory);
+        //setLikeHistory(newLikeHistory);
+
       }
     );
   };
@@ -72,7 +76,7 @@ function App() {
     let newPassHistory = [...passHistory, currentProfile!];
     getRandomProfile().then(
       (newProfile) => {
-        setPassHistory(newPassHistory);
+        //setPassHistory(newPassHistory);
         setCurrentProfile(newProfile);
       }
     );
