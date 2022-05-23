@@ -59,7 +59,7 @@ services:
         depends_on: #This is a lie
             - postgres
             - minio1
-            #- doggrdb            
+            #- doggrdb
     frontend:
        container_name: frontend
        build: ./frontend/
@@ -71,8 +71,8 @@ services:
        depends_on:
             - postgres
             #- doggrdb
-            
-            
+
+
 
 
 

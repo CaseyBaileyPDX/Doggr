@@ -4,6 +4,7 @@ import { User } from "./models/User";
 import { minioClient } from "../services/MinioService";
 import { Message } from "./models/Message";
 import { Profile } from "./models/Profile";
+import { Match } from "./models/MatchHistory";
 import { db } from "./DBService";
 
 const pghost = process.env.PGHOST || "postgres";
@@ -198,12 +199,17 @@ const SeedMinio = async () => {
   });
 };
 
+async function SeedMatches() {
+  await Match.sync({ force: true });
+}
+
 async function Seed() {
   console.log("Beginning seed");
 
   await SeedUsers();
   await SeedMessages();
   await SeedProfiles();
+  await SeedMatches();
   await SeedMinio();
 }
 
