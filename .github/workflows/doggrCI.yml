@@ -1,53 +1,23 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: Doggr CI
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the classauth branch
+  # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [master]
   pull_request:
     branches: [master]
 
   # Allows you to run this workflow manually from the Actions tab
-  #workflow_dispatch:
+  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # Backend testing job
-  # backend:
-  #   # The type of runner that the job will run on
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #     run:
-  #       working-directory: backend
-  #   # Steps represent a sequence of tasks that will be executed as part of the job
-  #   steps:
-  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #     - uses: actions/checkout@v3
-
-  #     - name: Setup Node.js environment
-  #       uses: actions/setup-node@v3.2.0
-  #       with:
-  #         # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
-  #         node-version: "14.x" # optional
-  #         # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
-  #         cache: "npm" # optional
-  #         cache-dependency-path: backend/package-lock.json
-
-  #     - name: Install dependencies
-  #       run: npm ci
-
-  #     - name: Build
-  #       run: npm run build --if-present
-
-  #     - name: Run test
-  #       run: npm run testCI
-
+  # Frontend testing job
   frontend:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    # This is only necessary for monorepos where we use subdirs
     defaults:
       run:
         working-directory: frontend
@@ -59,10 +29,9 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.2.0
         with:
-          # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
-          node-version: "14.x" # optional
-          # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
+          node-version: "14.x"
           cache: "npm" # optional
+          # Required for our monorepo setup
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
@@ -70,20 +39,35 @@ jobs:
 
       - name: Build
         run: npm run build --if-present
+        # Disable the CI flag here or it'll balk at warnings
         env:
           CI: ""
 
       - name: Run test
+        # the Coverage flag is the only way to make react/jest NOT watch-mode
         run: npm run test -- --coverage
-        # env:
-        #   CI: ""
 
-      # Runs a single command using the runners shell
-      #- name: Run a one-line script
-      #run: echo Hello, world!
+  #Backend testing job
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v3
 
-      # Runs a set of commands using the runners shell
-      #- name: Run a multi-line script
-      #run: |
-      #echo Add other actions to build,
-      #echo test, and deploy your project.
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.2.0
+        with:
+          node-version: "14.x"
+          cache: "npm"
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build --if-present
+
+      - name: Run test
+        run: npm run testCI
