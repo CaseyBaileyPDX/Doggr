@@ -7,9 +7,9 @@ import { Profile } from "./models/Profile";
 import { db } from "./DBService";
 
 const pghost = process.env.PGHOST;
-const minioHost = process.env.MINIO_HOST;
-const minioPort = process.env.MINIO_PORT;
-const externalIp = process.env.EXTERNAL_IP;
+const minioHost = process.env.MINIO_HOST || "nginx";
+const minioPort = process.env.MINIO_PORT || 8000;
+const externalIp = process.env.EXTERNAL_IP || "127.0.0.1";
 
 const SeedUsers = async () => {
   console.log("Beginning seed");

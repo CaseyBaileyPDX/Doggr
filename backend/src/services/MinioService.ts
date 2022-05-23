@@ -3,12 +3,12 @@ import Minio from "minio";
 
 const _minio = require("minio");
 
-const minioHost = process.env.MINIO_HOST;
-const minioPort = process.env.MINIO_PORT;
+const minioHost = process.env.MINIO_HOST || "nginx";
+const minioPort = process.env.MINIO_PORT || 9000;
 
 export const minioClient = new _minio.Client({
   endPoint: minioHost,
-  port: 9000,
+  port: minioPort,
   useSSL: false,
   accessKey: process.env.MINIO_USER,
   secretKey: process.env.MINIO_PASS,

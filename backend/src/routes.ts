@@ -1,3 +1,4 @@
+import "dotenv/config";
 import cors from "cors";
 import { promises as fs } from "fs";
 import path from "path";
@@ -8,8 +9,8 @@ import { checkDuplicateEmail } from "./middlewares/VerifySignUp";
 import { ConfigurePassport, generateAccessToken } from "./services/AuthService";
 import AuthenticateToken from "./middlewares/AuthenticateToken";
 import { UploadFileToMinio } from "./services/MinioService";
-import {CreateProfile, GetRandomProfile} from "./services/ProfileService";
-import {CreateMessage} from "./services/MessageService";
+import { CreateProfile, GetRandomProfile } from "./services/ProfileService";
+import { CreateMessage } from "./services/MessageService";
 
 export default function setupRoutes(app) {
 
@@ -24,7 +25,7 @@ export default function setupRoutes(app) {
   const router = express.Router();
 
   // Create new profile
-  router.post("/createProfile", Multer({storage: Multer.memoryStorage()}).single("file"), CreateProfile);
+  router.post("/createProfile", Multer({ storage: Multer.memoryStorage() }).single("file"), CreateProfile);
 
   // Create user
   router.post("/users",
