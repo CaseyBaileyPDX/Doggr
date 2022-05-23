@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import initialState from "./initialState";
 import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
-import "/public/css/doggrStyles.css";
+import "./css/doggrStyles.css";
 import Header from "./components/Header";
 import {MatchHistory} from "./components/MatchHistory";
 import {Profile} from "./components/Profile";
