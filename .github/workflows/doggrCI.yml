@@ -16,34 +16,34 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # Backend testing job
-  backend:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+  # backend:
+  #   # The type of runner that the job will run on
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: backend
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+  #   steps:
+  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #     - uses: actions/checkout@v3
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3.2.0
-        with:
-          # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
-          node-version: "14.x" # optional
-          # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
-          cache: "npm" # optional
-          cache-dependency-path: backend/package-lock.json
+  #     - name: Setup Node.js environment
+  #       uses: actions/setup-node@v3.2.0
+  #       with:
+  #         # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
+  #         node-version: "14.x" # optional
+  #         # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
+  #         cache: "npm" # optional
+  #         cache-dependency-path: backend/package-lock.json
 
-      - name: Install dependencies
-        run: npm ci
+  #     - name: Install dependencies
+  #       run: npm ci
 
-      - name: Build
-        run: npm run build --if-present
+  #     - name: Build
+  #       run: npm run build --if-present
 
-      - name: Run test
-        run: npm run testCI
+  #     - name: Run test
+  #       run: npm run testCI
 
   frontend:
     # The type of runner that the job will run on
@@ -70,9 +70,13 @@ jobs:
 
       - name: Build
         run: npm run build --if-present
+        env:
+          CI: ""
 
       - name: Run test
         run: npm run test
+        env:
+          CI: ""
 
       # Runs a single command using the runners shell
       #- name: Run a one-line script
