@@ -8,6 +8,7 @@
     "start": "nodemon ./dist/server.js",
     "dev": "concurrently -k \"npx tsc -w \" \"nodemon ./dist/server.js\"",
     "test": "jest --watch --detectOpenHandles",
+    "testCI": "jest",
     "lint": "eslint .",
     "migrate": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate",
     "seed": "npx tsc && node dist/database/Seed.js"
