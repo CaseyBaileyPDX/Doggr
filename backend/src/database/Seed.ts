@@ -1,10 +1,15 @@
 import "dotenv/config";
-import {QueryTypes} from "sequelize";
-import {User} from "./models/User";
-import {minioClient} from "../services/MinioService";
-import {Message} from "./models/Message";
-import {Profile} from "./models/Profile";
-import {db} from "./DBService";
+import { QueryTypes } from "sequelize";
+import { User } from "./models/User";
+import { minioClient } from "../services/MinioService";
+import { Message } from "./models/Message";
+import { Profile } from "./models/Profile";
+import { db } from "./DBService";
+
+const pghost = process.env.PGHOST;
+const minioHost = process.env.MINIO_HOST;
+const minioPort = process.env.MINIO_PORT;
+const externalIp = process.env.EXTERNAL_IP;
 
 const SeedUsers = async () => {
   console.log("Beginning seed");
@@ -31,11 +36,11 @@ const SeedUsers = async () => {
 
   // force true will drop the table if it already exists
   // such that every time we run seed, we start completely fresh
-  await User.sync({force: true});
+  await User.sync({ force: true });
 
   console.log('Tables have synced!');
 
-  await User.bulkCreate(userSeedData, {validate: true})
+  await User.bulkCreate(userSeedData, { validate: true })
     .then(() => {
       console.log('Users created');
     })
@@ -78,11 +83,11 @@ const SeedMessages = async () => {
     },
   ];
 
-  await Message.sync({force: true});
+  await Message.sync({ force: true });
 
   console.log('Messages table created');
 
-  await Message.bulkCreate(messageSeedData, {validate: true})
+  await Message.bulkCreate(messageSeedData, { validate: true })
     .then(() => {
       console.log('Messages seeded');
     })
@@ -96,22 +101,22 @@ const SeedMessages = async () => {
 async function SeedProfiles() {
   console.log("Seeding profiles");
 
-  await Profile.sync({force: true});
+  await Profile.sync({ force: true });
 
   const profileSeedData = [
     {
       name: "Catte",
       userId: "a",
-      profileUrl: "http://localhost:8000/doggr/profile1.jpg",
+      profileUrl: `http://${externalIp}:${minioPort}/doggr/profile1.jpg`,
     },
     {
       name: "Doggo",
       userId: "b",
-      profileUrl: "http://localhost:8000/doggr/profile2.jpg",
+      profileUrl: `http://${externalIp}:${minioPort}/doggr/profile2.jpg`,
     },
   ];
 
-  await Profile.bulkCreate(profileSeedData, {validate: true})
+  await Profile.bulkCreate(profileSeedData, { validate: true })
     .then(() => {
       console.log('Profiles created');
     })
@@ -125,7 +130,7 @@ const SeedMinio = async () => {
   console.log("in seed minio");
 
   const makeBucket = async () => {
-    minioClient.makeBucket("doggr", "localhost", async (err) => {
+    minioClient.makeBucket("doggr", minioHost, async (err) => {
       if (err) {
         console.log("Couldn't make bucket", err);
         return;
@@ -134,7 +139,9 @@ const SeedMinio = async () => {
     });
   };
 
+  console.log("Checking bucket exists");
   const bucketExists = await minioClient.bucketExists("doggr");
+  console.log("Finished checking bucket exists");
 
   if (!bucketExists) {
 

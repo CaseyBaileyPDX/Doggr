@@ -1,4 +1,4 @@
-import {Sequelize} from 'sequelize'
+import { Sequelize } from 'sequelize';
 
 const pguser = process.env.PGUSER;
 const pghost = process.env.PGHOST;

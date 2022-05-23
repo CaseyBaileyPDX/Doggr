@@ -4,7 +4,7 @@ FROM node:16
 WORKDIR /app
 RUN apt-get update
 # we can remove these once we're done tinkering
-RUN apt-get install -y apt-utils nano
+#RUN apt-get install -y nano
 
 # Install EXACTLY the dependency versions, not latest
 COPY package.json package-lock.json ./
@@ -20,5 +20,6 @@ EXPOSE 9000
 
 # Note you should be more extensive here if worried about deploying to Prod!
 RUN npm run build
+#RUN npm run seed
 CMD ["npm", "run", "dev"]
 

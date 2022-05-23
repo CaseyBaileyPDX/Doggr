@@ -5,7 +5,7 @@ FROM node:16
 WORKDIR /app
 RUN apt-get update
 # we can remove these once we're done tinkering
-RUN apt-get install -y apt-utils nano
+#RUN apt-get install -y apt-utils nano
 
 # add `/app/node_modules/.bin` to $PATH
 #ENV PATH /app/node_modules/.bin:$PATH
