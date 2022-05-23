@@ -4,7 +4,7 @@ import Minio from "minio";
 const _minio = require("minio");
 
 const minioHost = process.env.MINIO_HOST || "nginx";
-const minioPort = process.env.MINIO_PORT || 9000;
+const minioPort = parseInt(process.env.MINIO_PORT, 10) || 9000;
 
 export const minioClient = new _minio.Client({
   endPoint: minioHost,
