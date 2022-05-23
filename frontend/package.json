@@ -5,7 +5,7 @@
     "start": "react-dotenv && react-app-rewired start",
     "dev": "react-dotenv && react-app-rewired start",
     "build": "react-dotenv && react-scripts build",
-    "test": "react-dotenv && react-scripts test",
+    "test": "react-dotenv && react-scripts test",    
     "NONOSPOT": "react-scripts eject",
     "typecheck": "tsc --noEmit -p ."
   },

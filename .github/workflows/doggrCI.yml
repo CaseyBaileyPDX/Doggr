@@ -74,9 +74,9 @@ jobs:
           CI: ""
 
       - name: Run test
-        run: npm run test
-        env:
-          CI: ""
+        run: npm run test -- --coverage
+        # env:
+        #   CI: ""
 
       # Runs a single command using the runners shell
       #- name: Run a one-line script
