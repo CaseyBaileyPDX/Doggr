@@ -14,38 +14,38 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # Frontend testing job
-  # frontend:
-  #   # The type of runner that the job will run on
-  #   runs-on: ubuntu-latest
-  #   # This is only necessary for monorepos where we use subdirs
-  #   defaults:
-  #     run:
-  #       working-directory: frontend
-  #   # Steps represent a sequence of tasks that will be executed as part of the job
-  #   steps:
-  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #     - uses: actions/checkout@v3
+  frontend:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # This is only necessary for monorepos where we use subdirs
+    defaults:
+      run:
+        working-directory: frontend
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
 
-  #     - name: Setup Node.js environment
-  #       uses: actions/setup-node@v3.2.0
-  #       with:
-  #         node-version: "14.x"
-  #         cache: "npm" # optional
-  #         # Required for our monorepo setup
-  #         cache-dependency-path: frontend/package-lock.json
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.2.0
+        with:
+          node-version: "14.x"
+          cache: "npm" # optional
+          # Required for our monorepo setup
+          cache-dependency-path: frontend/package-lock.json
 
-  #     - name: Install dependencies
-  #       run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-  #     - name: Build
-  #       run: npm run build --if-present
-  #       # Disable the CI flag here or it'll balk at warnings
-  #       env:
-  #         CI: ""
+      - name: Build
+        run: npm run build --if-present
+        # Disable the CI flag here or it'll balk at warnings
+        env:
+          CI: ""
 
-  #     - name: Run test
-  #       # the Coverage flag is the only way to make react/jest NOT watch-mode
-  #       run: npm run test -- --coverage
+      - name: Run test
+        # the Coverage flag is the only way to make react/jest NOT watch-mode
+        run: npm run test -- --coverage
 
   #Backend testing job
   backend:

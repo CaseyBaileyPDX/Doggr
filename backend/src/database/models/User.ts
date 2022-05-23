@@ -28,7 +28,7 @@ export const User = db.define<UserModelAttrs>('users', {
     },
     beforeBulkCreate: async (users: [UserModelAttrs]) => {
 
-      for (let i = 0; i < users.length ; i++) {
+      for (let i = 0; i < users.length; i++) {
         console.log("Hashing user pw: ", users[i].password);
         users[i].password = await bcrypt.hash(users[i].password, 10);
         console.log("Hashed pw: ", users[i].password);

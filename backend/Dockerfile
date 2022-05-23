@@ -1,5 +1,15 @@
 FROM node:16
 
+ENV MINIO_HOST=nginx
+ENV MINIO_PORT=8000
+ENV MINIO_USER=minioUser
+ENV MINIO_PASS=minioPass
+ENV PGUSER=doggr_user
+ENV PGHOST=postgres
+ENV PGPASSWORD=doggr_pass
+ENV PGDATABASE=doggrdb
+ENV PGPORT=5432
+
 # sets the working directory to /app
 WORKDIR /app
 RUN apt-get update
@@ -19,7 +29,8 @@ COPY --chown=node:node . .
 EXPOSE 9000
 
 # Note you should be more extensive here if worried about deploying to Prod!
-RUN npm run build
+# This doesn't work because the seed runs during image creation rather than container
 #RUN npm run seed
-CMD ["npm", "run", "dev"]
+RUN npm run build
+CMD ["npm", "run", "docker"]
 

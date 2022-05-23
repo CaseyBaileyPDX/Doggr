@@ -46,8 +46,19 @@ services:
             - '/app/node_modules' #This prevents us from copying our node_modules when mounting
         ports:
             - "9000:9000"
+        environment:
+            - MINIO_HOST=minio1
+            - MINIO_PORT=9000
+            - MINIO_USER=minioUser
+            - MINIO_PASS=minioPass
+            - PGUSER=doggr_user
+            - PGHOST=postgres
+            - PGPASSWORD=doggr_pass
+            - PGDATABASE=doggrdb
+            - PGPORT=5432
         depends_on: #This is a lie
             - postgres
+            - minio1
             #- doggrdb            
     frontend:
        container_name: frontend

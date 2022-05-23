@@ -6,13 +6,16 @@ import { Message } from "./models/Message";
 import { Profile } from "./models/Profile";
 import { db } from "./DBService";
 
-const pghost = process.env.PGHOST;
+const pghost = process.env.PGHOST || "postgres";
 const minioHost = process.env.MINIO_HOST || "nginx";
-const minioPort = process.env.MINIO_PORT || 8000;
+const minioPort = parseInt(process.env.MINIO_PORT, 10) || 9000;
 const externalIp = process.env.EXTERNAL_IP || "127.0.0.1";
+const nginxPort = parseInt(process.env.NGINX_PORT, 10) || 8000;
+
+console.log("Host:port is: ", minioHost, minioPort);
 
 const SeedUsers = async () => {
-  console.log("Beginning seed");
+  console.log("Beginning seed Users");
 
   // Data that our 'Users' table will contain initially
   const userSeedData = [
@@ -99,20 +102,21 @@ const SeedMessages = async () => {
 
 
 async function SeedProfiles() {
-  console.log("Seeding profiles");
+  console.log("Seeding profiles with port: ", minioPort);
 
   await Profile.sync({ force: true });
+
 
   const profileSeedData = [
     {
       name: "Catte",
       userId: "a",
-      profileUrl: `http://${externalIp}:${minioPort}/doggr/profile1.jpg`,
+      profileUrl: `http://${externalIp}:${nginxPort}/doggr/profile1.jpg`,
     },
     {
       name: "Doggo",
       userId: "b",
-      profileUrl: `http://${externalIp}:${minioPort}/doggr/profile2.jpg`,
+      profileUrl: `http://${externalIp}:${nginxPort}/doggr/profile2.jpg`,
     },
   ];
 

@@ -7,6 +7,7 @@ import { db } from "../database/DBService";
 const minioHost = process.env.MINIO_HOST;
 const minioPort = process.env.MINIO_PORT;
 const externalIp = process.env.EXTERNAL_IP;
+const nginxPort = process.env.NGINX_PORT;
 
 export const GetRandomProfile = async () => {
   let profile = await db.query(" SELECT * FROM profiles ORDER BY RANDOM() LIMIT 1;", { type: QueryTypes.SELECT });
@@ -32,7 +33,7 @@ export const CreateProfile = async (req, res) => {
   // This is dangerous because we're letting file names collide, but o well
   // TODO: Hash this
   try {
-    const profileUrl = `http://${externalIp}:${minioPort}/doggr/${req.file.originalname}`;
+    const profileUrl = `http://${externalIp}:${nginxPort}/doggr/${req.file.originalname}`;
     console.log(`in createuser with ${name}:${profileUrl}`);
     Profile.create({
       name,
