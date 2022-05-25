@@ -76,7 +76,7 @@ export default function setupRoutes(app) {
   // Req needs to have sender_id, receiver_id
   // TODO: Re-enable authentication middleware
   router.post("/match", CreateMatch);
-  router.get("/match", GetMatchesForUser)
+  router.post("/mymatches", GetMatchesForUser)
 
   router.get("/about", async (req, res) => {
     res.status(200).send("about:GET");

@@ -1,6 +1,7 @@
 import "dotenv/config";
 import Minio from "minio";
 import express from "express";
+import "./database/models/Associate";
 import setupRoutes from "./routes";
 
 const _minio = require("minio");

@@ -1,10 +1,11 @@
 import "dotenv/config";
+import "./models/Associate";
 import { QueryTypes } from "sequelize";
 import { User } from "./models/User";
 import { minioClient } from "../services/MinioService";
 import { Message } from "./models/Message";
 import { Profile } from "./models/Profile";
-import { Match } from "./models/MatchHistory";
+import { Match } from "./models/Match";
 import { db } from "./DBService";
 
 const pghost = process.env.PGHOST || "postgres";
@@ -21,20 +22,16 @@ const SeedUsers = async () => {
   // Data that our 'Users' table will contain initially
   const userSeedData = [
     {
-      email: "test@gmail.com",
-      password: "123456",
-    },
-    {
-      email: "test2@email.com",
-      password: "password",
-    },
-    {
       email: "a",
       password: "a",
     },
     {
       email: "b",
       password: "b",
+    },
+    {
+      email: "c",
+      password: "c",
     },
   ];
 
@@ -110,11 +107,13 @@ async function SeedProfiles() {
 
   const profileSeedData = [
     {
+      id: 1,
       name: "Catte",
-      userId: "a",
+      userId: "c",
       profileUrl: `http://${externalIp}:${nginxPort}/doggr/profile1.jpg`,
     },
     {
+      id: 2,
       name: "Doggo",
       userId: "b",
       profileUrl: `http://${externalIp}:${nginxPort}/doggr/profile2.jpg`,
@@ -201,6 +200,28 @@ const SeedMinio = async () => {
 
 async function SeedMatches() {
   await Match.sync({ force: true });
+
+
+
+  const matchSeedData = [
+    {
+      sender_id: "a",
+      receiver_id: 1,
+    },
+    {
+      sender_id: "a",
+      receiver_id: 2,
+    },
+  ];
+
+  await Match.bulkCreate(matchSeedData, { validate: true })
+    .then(() => {
+      console.log('Matches created');
+    })
+    .catch((err) => {
+      console.log('failed to create seed Match');
+      console.log(err);
+    });
 }
 
 async function Seed() {

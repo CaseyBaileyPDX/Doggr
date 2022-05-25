@@ -1,6 +1,8 @@
 import {DataTypes, Model} from "sequelize";
 import bcrypt from "bcrypt";
 import {db} from "../DBService";
+import {Profile} from "./Profile";
+import {Match} from "./Match";
 
 interface UserModelAttrs extends Model {
   email: string,
@@ -36,3 +38,4 @@ export const User = db.define<UserModelAttrs>('users', {
     },
   },
 });
+

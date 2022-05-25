@@ -23,8 +23,6 @@ export function MatchHistoryProfile(props) {
     onUnmatchButtonClick
   } = props;
 
-
-
   const navigate = useNavigate();
 
   let onMessageButtonClick = (id) => {
@@ -34,10 +32,6 @@ export function MatchHistoryProfile(props) {
     };
     navigate("/messages", {state: state});
   };
-
-  useEffect(() => {
-    console.log(`Match History Profile ${name} rerendered`);
-  });
 
   return <div className="mt-5 flex flex-row">
     <div className="rounded-box doggr-match-history-img">
@@ -62,22 +56,37 @@ export function MatchHistory({
   likeHistory,
   onUnmatchButtonClick
 }: MatchHistoryProps) {
+
+  let context = useAuth();
+
   let [filterString, setFilterString] = useState("");
-  let [profilesToDisplay, setProfilesToDisplay] = useState([]);
-
-  // let profilesToDisplay = useMemo(
-  //   () => likeHistory.filter(s => s.name.includes(filterString)),
-  //   [likeHistory, filterString]
-  // );
-
-  //let profilesToDisplay =
+  let [profilesToDisplay, setProfilesToDisplay] = useState<any[]>([]);
 
   useEffect(() => {
     console.log("Match History rerendered");
-    setProfilesToDisplay()
-  });
+    const fetchData = async() => {
+      try {
+        let payload = getPayloadFromToken(context?.token);
+        let userId = payload.id;
+        const matches: any = await Match.getMatchesForUser(payload.id);
+        console.log("Fetched matches to display: ", matches);
+        setProfilesToDisplay(matches);
+
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   let filterBar = <FilterBar onApply={setFilterString}/>;
+
+  // id,
+  //   profileUrl,
+  //   name,
+  //   userId,
+  //   onUnmatchButtonClick
 
   return (
     <div className="doggrcenter">
@@ -88,7 +97,7 @@ export function MatchHistory({
         profile =>
           <MatchHistoryProfile
             onUnmatchButtonClick={onUnmatchButtonClick}
-            key={profile.name}
+            key={profile.id}
             {...profile} />
       )}
     </div>

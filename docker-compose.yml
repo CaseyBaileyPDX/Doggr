@@ -67,7 +67,7 @@ services:
             - './frontend:/app'
             - '/app/node_modules' #This prevents us from copying our node_modules when mounting
        ports:
-            - 3000:3000
+            - "3000:3000"
        depends_on:
             - postgres
             #- doggrdb

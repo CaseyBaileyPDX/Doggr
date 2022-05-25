@@ -1,6 +1,7 @@
 import {DataTypes, Model} from "sequelize";
 import {db} from "../DBService";
 import {User} from "./User";
+import {Profile} from "./Profile";
 
 interface MatchModelAttrs extends Model {
   sender_id: number,
@@ -16,10 +17,11 @@ export const Match = db.define<MatchModelAttrs>('matches', {
     },
   },
   receiver_id: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     references: {
-      model: User,
-      key: "email",
+      model: Profile,
+      key: "id",
     },
   },
 });
+
