@@ -27,10 +27,31 @@ export const CreateMatch = async (req, res) => {
 };
 
 export const Unmatch = async (req, res) => {
-  const { match_id } = req.body;
-  return Match.destroy({
-    where: { id: match_id }
-  });
+  const { sender_id, receiver_id } = req.body;
+  try {
+    console.log("About to destroy");
+    let destroyResult = await  Match.destroy({
+      where: {
+        sender_id,
+        receiver_id
+      }
+    });
+    console.log("Awaited delete");
+
+    // if res > 0 then we destroyed something
+    if (destroyResult > 0) {
+      console.log("Delete successful")
+      res.status(200).json({ message: "Successful delete"});
+    } else {
+      console.log("Delete unsuccessful");
+      res.status(500)
+        .json({message: "No match records found for delete"});
+    }
+  }
+  catch (err) {
+    console.log("Unmatch error: ", err);
+    res.status(500).send(err);
+  }
 }
 
 export async function GetMatchesForUser(req, res) {

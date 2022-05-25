@@ -11,7 +11,7 @@ export type MsgBoxState = {
   receiver_id: number,
 }
 
-export type MatchHistoryProfileProps = ProfileType & { onUnmatchButtonClick: (id: number) => void }
+//export type MatchHistoryProfileProps = ProfileType & { setShouldRefresh: (value: boolean) => void }
 
 export function MatchHistoryProfile(props) {
   const context = useAuth();
@@ -20,7 +20,7 @@ export function MatchHistoryProfile(props) {
     profileUrl,
     name,
     userId,
-    onUnmatchButtonClick
+    setShouldRefresh
   } = props;
 
   const navigate = useNavigate();
@@ -33,6 +33,18 @@ export function MatchHistoryProfile(props) {
     navigate("/messages", {state: state});
   };
 
+  let onUnmatch = async(receiver_id) => {
+    let sender_id = getPayloadFromToken(context?.token).id;
+    try {
+      let unmatchRes = await Match.unmatch(sender_id, receiver_id);
+    } catch (err) {
+      console.log("Error unmatching: ", err);
+    }
+
+    console.log("Setting should refresh to true");
+    setShouldRefresh(true);
+  }
+
   return <div className="mt-5 flex flex-row">
     <div className="rounded-box doggr-match-history-img">
       <img src={profileUrl} alt=""/>
@@ -40,35 +52,32 @@ export function MatchHistoryProfile(props) {
     <div className="w-64 flex flex-wrap justify-center">
       <span className="w-64 ml-2 text-center">{name}</span>
       <div className="grow-0">
-        <button className="doggrbtn" onClick={() => onUnmatchButtonClick(id)}>Unmatch</button>
+        <button className="doggrbtn" onClick={() => onUnmatch(id)}>Unmatch</button>
         <button className="doggrbtn" onClick={() => onMessageButtonClick(id)}>Message</button>
       </div>
     </div>
   </div>;
 }
 
-export type MatchHistoryProps = {
-  likeHistory: Array<ProfileType>,
-  onUnmatchButtonClick: (id: number) => void,
+async function GetMatches(token) {
+  let payload = getPayloadFromToken(token);
+  let userId = payload.id;
+  return Match.getMatchesForUser(payload.id);
 }
 
-export function MatchHistory({
-  likeHistory,
-  onUnmatchButtonClick
-}: MatchHistoryProps) {
+
+export function MatchHistory() {
 
   let context = useAuth();
 
-  let [filterString, setFilterString] = useState("");
   let [profilesToDisplay, setProfilesToDisplay] = useState<any[]>([]);
+  let [shouldRefresh, setShouldRefresh] = useState(true);
 
   useEffect(() => {
     console.log("Match History rerendered");
     const fetchData = async() => {
       try {
-        let payload = getPayloadFromToken(context?.token);
-        let userId = payload.id;
-        const matches: any = await Match.getMatchesForUser(payload.id);
+        let matches = await GetMatches(context?.token);
         console.log("Fetched matches to display: ", matches);
         setProfilesToDisplay(matches);
 
@@ -78,26 +87,18 @@ export function MatchHistory({
     }
 
     fetchData();
-  }, []);
-
-  let filterBar = <FilterBar onApply={setFilterString}/>;
-
-  // id,
-  //   profileUrl,
-  //   name,
-  //   userId,
-  //   onUnmatchButtonClick
+    setShouldRefresh(false);
+  }, [shouldRefresh]);
 
   return (
     <div className="doggrcenter">
       <div className="doggrcenter doggr-section-text">Past matches</div>
-      {filterBar}
       <br/>
       {profilesToDisplay.map(
         profile =>
           <MatchHistoryProfile
-            onUnmatchButtonClick={onUnmatchButtonClick}
             key={profile.id}
+            setShouldRefresh ={setShouldRefresh}
             {...profile} />
       )}
     </div>

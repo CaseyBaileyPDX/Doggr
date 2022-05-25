@@ -14,6 +14,7 @@ export type ProfileProps = {
 export function Profile(props: ProfileProps) {
   let context = useAuth();
   let {
+    id,
     profileUrl,
     name,
     onLikeButtonClick,
@@ -26,7 +27,11 @@ export function Profile(props: ProfileProps) {
     let payload = getPayloadFromToken(context?.token);
     let senderId = payload.id;
     console.log(senderId);
-    const result = await Match.send( senderId, "b");
+    try {
+      await Match.send( senderId, id);
+    } catch (err) {
+      console.log("Error in sending match: ", err);
+    }
 
   }
 

@@ -34,8 +34,8 @@ export type FilterBarProps = {
 function App() {
 
   let [currentProfile, setCurrentProfile] = useState<ProfileType | null>(null);
-  let [likeHistory, setLikeHistory] = useState<Array<ProfileType>>([]);
-  let [passHistory, setPassHistory] = useState<Array<ProfileType>>([]);
+  // let [likeHistory, setLikeHistory] = useState<Array<ProfileType>>([]);
+  // let [passHistory, setPassHistory] = useState<Array<ProfileType>>([]);
 
   // empty deps, runs only on startup
   useEffect(() => {
@@ -43,8 +43,7 @@ function App() {
       try {
         let initialState = await getInitialState();
         setCurrentProfile(initialState.currentProfile);
-        setLikeHistory(initialState.likeHistory);
-        setPassHistory(initialState.passHistory);
+
       } catch (err) {
         console.log(err);
       }
@@ -61,31 +60,22 @@ function App() {
 
 
   let onLikeButtonClick = async () => {
-    let newLikeHistory = [...likeHistory, currentProfile!];
 
     getRandomProfile().then(
       async (newProfile) => {
         setCurrentProfile(newProfile);
-        //setLikeHistory(newLikeHistory);
-
       }
     );
   };
 
   let onPassButtonClick = () => {
-    let newPassHistory = [...passHistory, currentProfile!];
     getRandomProfile().then(
       (newProfile) => {
-        //setPassHistory(newPassHistory);
         setCurrentProfile(newProfile);
       }
     );
   };
 
-  let onUnmatchButtonClick = (id: number) => {
-    let newLikeHistory = likeHistory.filter((i) => i.id !== id);
-    setLikeHistory(newLikeHistory);
-  };
 
 
   let profile = <Profile {...currentProfile!}
@@ -100,8 +90,7 @@ function App() {
             <Route path="/" element={profile} />
             <Route path="match-history" element={
               <ProtectedRoute>
-                <MatchHistory likeHistory={likeHistory}
-                  onUnmatchButtonClick={onUnmatchButtonClick} />
+                <MatchHistory />
               </ProtectedRoute>
             } />
 
