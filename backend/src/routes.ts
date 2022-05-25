@@ -11,7 +11,7 @@ import AuthenticateToken from "./middlewares/AuthenticateToken";
 import { UploadFileToMinio } from "./services/MinioService";
 import { CreateProfile, GetRandomProfile } from "./services/ProfileService";
 import { CreateMessage } from "./services/MessageService";
-import {CreateMatch} from "./services/MatchService";
+import {CreateMatch, GetMatchesForUser} from "./services/MatchService";
 
 export default function setupRoutes(app) {
 
@@ -76,6 +76,7 @@ export default function setupRoutes(app) {
   // Req needs to have sender_id, receiver_id
   // TODO: Re-enable authentication middleware
   router.post("/match", CreateMatch);
+  router.get("/match", GetMatchesForUser)
 
   router.get("/about", async (req, res) => {
     res.status(200).send("about:GET");

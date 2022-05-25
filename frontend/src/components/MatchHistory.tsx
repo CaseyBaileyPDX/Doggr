@@ -63,14 +63,18 @@ export function MatchHistory({
   onUnmatchButtonClick
 }: MatchHistoryProps) {
   let [filterString, setFilterString] = useState("");
+  let [profilesToDisplay, setProfilesToDisplay] = useState([]);
 
-  let profilesToDisplay = useMemo(
-    () => likeHistory.filter(s => s.name.includes(filterString)),
-    [likeHistory, filterString]
-  );
+  // let profilesToDisplay = useMemo(
+  //   () => likeHistory.filter(s => s.name.includes(filterString)),
+  //   [likeHistory, filterString]
+  // );
+
+  //let profilesToDisplay =
 
   useEffect(() => {
     console.log("Match History rerendered");
+    setProfilesToDisplay()
   });
 
   let filterBar = <FilterBar onApply={setFilterString}/>;

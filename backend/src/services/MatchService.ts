@@ -24,3 +24,15 @@ export const CreateMatch = async (req, res) => {
     });
 };
 
+export async function GetMatchesForUser(req, res) {
+  let sender_id = req.body.sender_id;
+  let matches = await Match.findAll({
+    where: {
+      sender_id
+    }
+  });
+
+  console.log(matches);
+  res.status(200).json(matches);
+
+}

@@ -12,3 +12,10 @@ INITIAL SETUP
 6. Bring up back/frontend by executing `npm run dev` in each
 
 Test via http://localhost:3000
+
+DROPLET DEPLOY
+- Enable floating IP in droplet - 138.197.52.82
+- Add NEW ssh key via `ssh-keygen` giving it a non-standard path/filename (droplet_id_rsa)
+- Give droplet the key `ssh-copy-id -i /home/<user>/.ssh/droplet_id_rsa.pub root@<Droplet Floating IP>`
+- SSH into droplet and install docker: https://docs.docker.com/engine/install/ubuntu/
+- Add dir to hold our files `mkdir /app`
