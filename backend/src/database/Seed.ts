@@ -108,7 +108,7 @@ async function SeedProfiles() {
   const profileSeedData = [
     {
       id: 1,
-      name: "Catte",
+      name: "CatteZ",
       userId: "c",
       profileUrl: `http://${externalIp}:${nginxPort}/doggr/profile1.jpg`,
     },

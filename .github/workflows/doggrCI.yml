@@ -6,99 +6,74 @@ on:
   pull_request:
     branches: [master]
   workflow_dispatch:
-#    inputs:
-#      version:
-#        description: 'Image version'
-#        required: true
 
 jobs:
-#  frontend_testing:
-#    runs-on: ubuntu-latest
-#
-#    defaults:
-#      run:
-#        working-directory: frontend
-#
-#    steps:
-#      - uses: actions/checkout@v3
-#
-#      - name: Setup Node Environment
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: "14.x"
-#          cache: "npm"
-#          # REQUIRED FOR MONOREPOS
-#          cache-dependency-path: frontend/package-lock.json
-#
-#      - name: Install npm dependencies
-#        run: npm ci
-#
-#      - name: Build Frontend
-#        run: npm run build --if-present
-#        env:
-#          CI: ""
-#
-#      - name: Run Tests
-#        run: npm run test -- --coverage
-#
-#  backend_testing:
-#    runs-on: ubuntu-latest
-#
-#    defaults:
-#      run:
-#        working-directory: backend
-#
-#    steps:
-#      - uses: actions/checkout@v3
-#
-#      - name: Setup Node Environment
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: "14.x"
-#          cache: "npm"
-#          # REQUIRED FOR MONOREPOS
-#          cache-dependency-path: backend/package-lock.json
-#
-#      - name: Install npm dependencies
-#        run: npm ci
-#
-#      - name: Build Frontend
-#        run: npm run build --if-present
-#
-#      - name: Run Tests
-#        run: npm run testCI
+  frontend_testing:
+    runs-on: ubuntu-latest
 
-#  deploy:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Deploy Stack
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.SSH_HOST }}
-#          username: ${{ secrets.SSH_USERNAME }}
-#          key: ${{ secrets.SSH_KEY_SECRET }}
-#          port: 22
-#          script: |
-#            docker-compose down
-#            touch docker_down.txt
-#            docker-compose up -d
-#            touch docker_up.txt
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node Environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: "14.x"
+          cache: "npm"
+          # REQUIRED FOR MONOREPOS
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build Frontend
+        run: npm run build --if-present
+        env:
+          CI: ""
+
+      - name: Run Tests
+        run: npm run test -- --coverage
+
+  backend_testing:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node Environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: "14.x"
+          cache: "npm"
+          # REQUIRED FOR MONOREPOS
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build Frontend
+        run: npm run build --if-present
+
+      - name: Run Tests
+        run: npm run testCI
 
   build_and_push:
     runs-on: ubuntu-latest
 
     # Ensure test job passes before pushing image.
-    #needs: test
+    needs: [frontend_testing, backend_testing]
 
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v3
-#      - name: Create env files
-#        run: |
-#          touch .env
-#          echo "${{ secrets.SERVER_ENV_PROD }}" > .env
-#          cat .env
+
       - name: Build image
         run: docker-compose -f docker-compose.yml build  --no-cache
 
