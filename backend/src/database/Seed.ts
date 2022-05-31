@@ -146,7 +146,7 @@ async function SeedProfiles() {
       id: 7,
       name: "Liz",
       userId: "c",
-      profileUrl: `http://${externalIp}:${nginxPort}/doggr/liz.png`,
+      profileUrl: `http://${externalIp}:${nginxPort}/doggr/liz.jpg`,
     }
   ];
 
