@@ -122,7 +122,7 @@ jobs:
           port: 22
           script: |
             cd /app/Doggr
-            docker-compose down
+            docker-compose -f /app/Doggr/docker-compose.yml down
             touch docker_down.txt
             docker-compose -f /app/Doggr/docker-compose.yml up -d --with-registry-auth
             touch docker_up.txt
