@@ -1,8 +1,8 @@
-name: Doggr CI
+name: Doggr CICD
 
 on:
   push:
-    branches: [master]
+    branches: [master, develop]
   pull_request:
     branches: [master]
   workflow_dispatch:
@@ -52,7 +52,6 @@ jobs:
         with:
           node-version: "14.x"
           cache: "npm"
-          # REQUIRED FOR MONOREPOS
           cache-dependency-path: backend/package-lock.json
 
       - name: Install npm dependencies
@@ -67,7 +66,7 @@ jobs:
   build_and_push:
     runs-on: ubuntu-latest
 
-    # Ensure test job passes before pushing image.
+    # Ensure test jobs pass before continuing.
     needs: [frontend_testing, backend_testing]
 
     steps:
@@ -133,9 +132,6 @@ jobs:
           script: |
             cd /app/Doggr
             doctl registry login
-            rm docker-compose.yml
             mv docker-compose.prod.yml docker-compose.yml
             sudo docker-compose up -d --build
             touch docker_up.txt
-
-
