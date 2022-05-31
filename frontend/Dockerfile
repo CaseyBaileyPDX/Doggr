@@ -11,12 +11,15 @@ RUN apt-get update
 #ENV PATH /app/node_modules/.bin:$PATH
 
 # install app dependencies
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm ci
-
-# Copy app over
+#COPY package.json ./
+#COPY package-lock.json ./
+#RUN npm ci
+#
+## Copy app over
+#COPY --chown=node:node . .
 COPY --chown=node:node . .
+
+RUN npm install
 
 # Docker annoyingly tries to persist perms on node_modules as being "root"
 # if we happen to have a local copy of node_modules
