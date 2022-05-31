@@ -124,6 +124,6 @@ jobs:
             cd /app
             docker-compose down
             touch docker_down.txt
-            docker-compose up -d --with-registry-auth
+            docker-compose -f /app/docker-compose.yml up -d --with-registry-auth
             touch docker_up.txt
 
