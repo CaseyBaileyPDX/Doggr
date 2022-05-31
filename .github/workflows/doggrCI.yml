@@ -94,7 +94,7 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
-#      - name: Create env file
+#      - name: Create env files
 #        run: |
 #          touch .env
 #          echo "${{ secrets.SERVER_ENV_PROD }}" > .env
