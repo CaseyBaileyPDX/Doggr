@@ -223,6 +223,12 @@ const SeedMinio = async () => {
         console.log("Bucket policy set");
         await minioClient.fPutObject("doggr", "profile1.jpg", "assets/seed/profile1.jpg");
         await minioClient.fPutObject("doggr", "profile2.jpg", "assets/seed/profile2.jpg");
+        await minioClient.fPutObject("doggr", "Abu.jpg", "assets/seed/Abu.jpg");
+        await minioClient.fPutObject("doggr", "HideYoCattes.jpg", "assets/seed/HideYoCattes.jpg");
+        await minioClient.fPutObject("doggr", "honey.jpg", "assets/seed/honey.jpg");
+        await minioClient.fPutObject("doggr", "kazoo.jpg", "assets/seed/kazoo.jpg");
+        await minioClient.fPutObject("doggr", "liz.jpg", "assets/seed/liz.jpg");
+
         console.log("Added seed profile pictures to minio")
       }
     });
