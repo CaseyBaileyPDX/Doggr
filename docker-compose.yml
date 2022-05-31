@@ -1,12 +1,7 @@
 version: "3.7"
 
-
 services:
-#     doggrdb:
-#         container_name: doggrdb
-#         image: mongo
-#         volumes:
-#             - /data/doggrdb:/data/db # this is format of host_path:container_path
+
     postgres:
         container_name: postgres
         image: postgres
@@ -64,7 +59,6 @@ services:
         depends_on: #This is a lie
             - postgres
             - minio1
-            #- doggrdb
     frontend:
        container_name: frontend
 
@@ -75,6 +69,7 @@ services:
             #- './frontend:/app'
             #- '/app/node_modules' #This prevents us from copying our node_modules when mounting
        ports:
+            - # Look ma, no nginx required!  DONT DO THIS IRL
             - "80:3000"
        environment:
             - REACT_APP_BACKEND_API=http://138.197.52.82:9000/api/v1
@@ -83,63 +78,6 @@ services:
             - backend
 
 
-
-
-
-
-    ##########################################################################
-    #################### MEGA MINIO FILE STORAGE EXAMPLE #####################
-    # Just for fun and to show what you CAN accomplish with Docker IRL
-    # starts 4 docker containers running minio server instances.
-    # using an nginx reverse proxy with load balancing.  You can access
-    # it through port 8000 similar to the baby minio container.
-
-
-    # Settings and configurations that are common for all containers
-    #x-minio-common: &minio-common
-    #    image: quay.io/minio/minio:RELEASE.2022-05-04T07-45-27Z
-    #    command: server --console-address ":9001" http://minio{1...4}/data{1...2}
-    #    expose:
-    #        - "9000"
-    #        - "9001"
-    #    environment:
-    #        MINIO_ROOT_USER: minioadmin
-    #        MINIO_ROOT_PASSWORD: minioadmin
-    #    healthcheck:
-    #        test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-    #        interval: 30s
-    #        timeout: 20s
-    #        retries: 3
-
-
-#    minio1:
-#        <<: *minio-common
-#        hostname: minio1
-#        volumes:
-#            - data1-1:/data1
-#            - data1-2:/data2
-#
-#    minio2:
-#        <<: *minio-common
-#        hostname: minio2
-#        volumes:
-#            - data2-1:/data1
-#            - data2-2:/data2
-#
-#    minio3:
-#        <<: *minio-common
-#        hostname: minio3
-#        volumes:
-#            - data3-1:/data1
-#            - data3-2:/data2
-#
-#    minio4:
-#        <<: *minio-common
-#        hostname: minio4
-#        volumes:
-#            - data4-1:/data1
-#            - data4-2:/data2
-#
     nginx:
        container_name: nginx
        image: nginx:1.19.2-alpine
@@ -152,20 +90,8 @@ services:
            - "8001:9001"
        depends_on:
            - minio1
-        #    - minio2
-        #    - minio3
-        #    - minio4
-### By default this config uses default local driver,
-### For custom volumes replace with volume driver configuration.
+
 volumes:
     minio_data:
     postgres_data:
-#        driver: local
-#    data1-1:
-#    data1-2:
-#    data2-1:
-#    data2-2:
-#    data3-1:
-#    data3-2:
-#    data4-1:
-#    data4-2:
+
