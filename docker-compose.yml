@@ -69,7 +69,7 @@ services:
        image: registry.digitalocean.com/doggr/frontend
        # Build and Image are mutually exclusive, and build will override
        #build: ./frontend/
-       volumes:
+       #volumes:
             #- './frontend:/app'
             #- '/app/node_modules' #This prevents us from copying our node_modules when mounting
        ports:
