@@ -44,7 +44,7 @@ services:
         #volumes:
             # This pulls in all of our code and mounts it
             # This allows us to quickly change our code and view results automatically
-            # But should be REMOVED in a Production Compose setup
+            # But should be REMOVED in a Production Compose
             #- './backend:/app'
             #- '/app/node_modules' #This prevents us from copying our node_modules when mounting
         ports:
