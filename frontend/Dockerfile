@@ -13,14 +13,14 @@ RUN apt-get update
 # install app dependencies
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm ci 
+RUN npm ci
 
 # Copy app over
-COPY . .
+COPY --chown=node:node . .
 
 # Docker annoyingly tries to persist perms on node_modules as being "root"
 # if we happen to have a local copy of node_modules
-RUN chown -R node:node /app/node_modules
+#RUN chown -R node:node /app/node_modules
 #RUN mv .env.docker .env
 
 # Not technically needed, but shows intent
