@@ -17,15 +17,17 @@ RUN apt-get update
 #RUN apt-get install -y nano
 
 # Install EXACTLY the dependency versions, not latest
-COPY package.json package-lock.json ./
+#COPY package.json package-lock.json ./
 
 # If building for prod, we don't need dev deps, so can run
 # > npm ci --only=prod
-RUN npm ci 
+
 
 COPY --chown=node:node . .
+
+RUN npm install
 # We ignore the local .env, but need to use the docker one in its place
-#RUN mv .env.docker .env
+RUN mv easyenv.docker .env
 EXPOSE 9000
 
 # Note you should be more extensive here if worried about deploying to Prod!
