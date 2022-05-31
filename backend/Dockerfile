@@ -21,7 +21,7 @@ RUN apt-get update
 
 # If building for prod, we don't need dev deps, so can run
 # > npm ci --only=prod
-
+ENV TOKEN_SECRET=116A4857D1AC06E749417ED52EFDA0AECC534A35B5C6416A08DB355921BDF6CD
 
 COPY --chown=node:node . .
 

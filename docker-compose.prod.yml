@@ -59,6 +59,8 @@ services:
             - PGPASSWORD=doggr_pass
             - PGDATABASE=doggrdb
             - PGPORT=5432
+            - TOKEN_SECRET=116A4857D1AC06E749417ED52EFDA0AECC534A35B5C6416A08DB355921BDF6CD
+            - EXTERNAL_IP=138.197.52.82
         depends_on: #This is a lie
             - postgres
             - minio1
