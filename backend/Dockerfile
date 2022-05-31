@@ -30,7 +30,7 @@ RUN npm install
 RUN mv easyenv.docker .env
 EXPOSE 9000
 
-# Note you should be more extensive here if worried about deploying to Prod!
+# Note you should be more extensive here if worried about deploying to Prod
 # This doesn't work because the seed runs during image creation rather than container
 #RUN npm run seed
 RUN npm run build
