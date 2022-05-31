@@ -96,8 +96,8 @@ jobs:
           port: 22
           script: |
             cd /app/Doggr            
-            docker-compose -f /app/Doggr/docker-compose.yml down 
-            docker system prune -af
+            sudo docker-compose -f /app/Doggr/docker-compose.yml down 
+            sudo docker system prune -af
             rm -rf ./*
             touch docker_down.txt
 
