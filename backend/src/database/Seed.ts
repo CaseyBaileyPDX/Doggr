@@ -118,6 +118,36 @@ async function SeedProfiles() {
       userId: "b",
       profileUrl: `http://${externalIp}:${nginxPort}/doggr/profile2.jpg`,
     },
+    {
+      id: 3,
+      name: "Abu",
+      userId: "c",
+      profileUrl: `http://${externalIp}:${nginxPort}/doggr/Abu.jpg`,
+    },
+    {
+      id: 4,
+      name: "HideYoCattes",
+      userId: "b",
+      profileUrl: `http://${externalIp}:${nginxPort}/doggr/HideYoCattes.jpg`,
+    },
+    {
+      id: 5,
+      name: "Honey",
+      userId: "c",
+      profileUrl: `http://${externalIp}:${nginxPort}/doggr/honey.jpg`,
+    },
+    {
+      id: 6,
+      name: "Kazoo",
+      userId: "b",
+      profileUrl: `http://${externalIp}:${nginxPort}/doggr/kazoo.jpg`,
+    },
+    {
+      id: 7,
+      name: "Liz",
+      userId: "c",
+      profileUrl: `http://${externalIp}:${nginxPort}/doggr/liz.png`,
+    }
   ];
 
   await Profile.bulkCreate(profileSeedData, { validate: true })
