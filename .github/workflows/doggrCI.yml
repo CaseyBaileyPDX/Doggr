@@ -157,7 +157,7 @@ jobs:
           key: ${{ secrets.SSH_KEY_SECRET }}
           port: 22
           script: |                                  
-            docker-compose -f /app/Doggr/docker-compose.yml up -d --with-registry-auth
+            docker-compose -f /app/Doggr/docker-compose.yml up -d --with-registry-auth --force-recreate
             touch docker_up.txt
 
 #      - name: copy file via ssh password
