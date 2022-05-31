@@ -38,7 +38,7 @@ services:
         container_name: backend
         image: registry.digitalocean.com/doggr/backend
         #build: ./backend/
-        restart: always
+        #restart: always
         volumes:
             # This pulls in all of our code and mounts it
             # This allows us to quickly change our code and view results automatically
