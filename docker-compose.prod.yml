@@ -74,6 +74,8 @@ services:
             #- '/app/node_modules' #This prevents us from copying our node_modules when mounting
        ports:
             - "3000:3000"
+       environment:
+         - BACKEND_API=http://128.197.52.82:9000/api/v1
        depends_on:
             - postgres
             #- doggrdb
