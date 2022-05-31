@@ -37,7 +37,7 @@ services:
     backend:
         container_name: backend
         image: registry.digitalocean.com/doggr/backend
-        build: ./backend/
+        #build: ./backend/
         restart: always
         volumes:
             # This pulls in all of our code and mounts it
@@ -64,7 +64,7 @@ services:
     frontend:
        container_name: frontend
        image: registry.digitalocean.com/doggr/frontend
-       build: ./frontend/
+       #build: ./frontend/
        volumes:
             - './frontend:/app'
             - '/app/node_modules' #This prevents us from copying our node_modules when mounting
