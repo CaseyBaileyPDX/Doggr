@@ -154,8 +154,10 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY_SECRET }}
           port: 22
-          script: |                                  
-            docker-compose -f /app/Doggr/docker-compose.yml up -d --with-registry-auth --force-recreate
+          script: |                
+            cd /app/Doggr
+            doctl registry login
+            docker-compose up -d 
             touch docker_up.txt
 
 #      - name: copy file via ssh password
