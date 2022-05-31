@@ -22,9 +22,6 @@ services:
         expose:
             - "9000"
             - "9001"
-        # ports:  # NOTE!  HERE WE'RE CHANGING THE PORT FROM 9000 TO 8000 because our backend already uses 9000
-        #     - '8000:9000'
-        #     - '8001:9001'
         environment:
             - MINIO_DEFAULT_BUCKETS=doggr:public
             - MINIO_ROOT_USER=minioUser
@@ -36,12 +33,6 @@ services:
         image: registry.digitalocean.com/doggr/backend
         build: ./backend/
         restart: always
-        #volumes:
-            # This pulls in all of our code and mounts it
-            # This allows us to quickly change our code and view results automatically
-            # But should be REMOVED in a Production Compose setup
-            #- './backend:/app'
-            #- '/app/node_modules' #This prevents us from copying our node_modules when mounting
         ports:
             - "9000:9000"
         environment:
@@ -65,18 +56,13 @@ services:
        image: registry.digitalocean.com/doggr/frontend
        # Build and Image are mutually exclusive, and build will override, so we remove it from prod
        build: ./frontend/
-       #volumes:
-            #- './frontend:/app'
-            #- '/app/node_modules' #This prevents us from copying our node_modules when mounting
        ports:
-            - # Look ma, no nginx required!  DONT DO THIS IRL
             - "80:3000"
        environment:
             - REACT_APP_BACKEND_API=http://138.197.52.82:9000/api/v1
        depends_on:
             - postgres
             - backend
-
 
     nginx:
        container_name: nginx
