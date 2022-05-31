@@ -60,7 +60,7 @@ export function Login() {
       <div>
         <label className="label" htmlFor="password">Password</label>
         <input
-          type="text"
+          type="password"
           className={"input input-bordered max-w-2xs"}
           id="password"
           required
