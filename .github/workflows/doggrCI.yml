@@ -121,7 +121,7 @@ jobs:
           key: ${{ secrets.SSH_KEY_SECRET }}
           port: 22
           source: "docker-compose.yml"
-          target: "/app/Doggr/docker-compose.yml"
+          target: "/app/Doggr/"
 
 #      - name: Deploy Stack
 #        uses: appleboy/ssh-action@master
