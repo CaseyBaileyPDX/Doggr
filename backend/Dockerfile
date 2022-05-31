@@ -27,7 +27,7 @@ COPY --chown=node:node . .
 
 RUN npm install
 # We ignore the local .env, but need to use the docker one in its place
-RUN mv easyenv.docker .env
+#RUN mv easyenv.docker .env
 EXPOSE 9000
 
 # Note you should be more extensive here if worried about deploying to Prod

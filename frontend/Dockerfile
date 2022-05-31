@@ -21,7 +21,7 @@ COPY --chown=node:node . .
 # Docker annoyingly tries to persist perms on node_modules as being "root"
 # if we happen to have a local copy of node_modules
 #RUN chown -R node:node /app/node_modules
-RUN mv easyenv.docker .env
+#RUN mv easyenv.docker .env
 
 # Not technically needed, but shows intent
 EXPOSE 3000
