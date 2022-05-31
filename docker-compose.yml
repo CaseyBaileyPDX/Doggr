@@ -38,8 +38,8 @@ services:
             - 'minio_data:/data'
     backend:
         container_name: backend
-        #image: registry.digitalocean.com/doggr/backend
-        build: ./backend/
+        image: registry.digitalocean.com/doggr/backend
+        #build: ./backend/
         #restart: always
         #volumes:
             # This pulls in all of our code and mounts it
@@ -65,8 +65,10 @@ services:
             #- doggrdb
     frontend:
        container_name: frontend
-       #image: registry.digitalocean.com/doggr/frontend
-       build: ./frontend/
+
+       image: registry.digitalocean.com/doggr/frontend
+       # Build and Image are mutually exclusive, and build will override
+       #build: ./frontend/
        volumes:
             #- './frontend:/app'
             - '/app/node_modules' #This prevents us from copying our node_modules when mounting
