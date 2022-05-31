@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const external_IP = process.env.BACKEND_API;
+
 export const httpClient = axios.create({
-  baseURL: "http://localhost:9000/api/v1",
+  baseURL: external_IP,
   headers: {
     "Content-type": "application/json"
   }
