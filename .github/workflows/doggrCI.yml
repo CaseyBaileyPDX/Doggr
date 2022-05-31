@@ -2,12 +2,12 @@ name: Doggr CI
 
 on:
   push:
-    branches: [master]
+    branches: [deploy]
   pull_request:
-    branches: [master]
+    branches: [deploy]
 
 jobs:
-  frontend:
+  frontend_testing:
     runs-on: ubuntu-latest
 
     defaults:
@@ -36,7 +36,7 @@ jobs:
       - name: Run Tests
         run: npm run test -- --coverage
 
-  backend:
+  backend_testing:
     runs-on: ubuntu-latest
 
     defaults:
@@ -62,3 +62,10 @@ jobs:
 
       - name: Run Tests
         run: npm run testCI
+
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
