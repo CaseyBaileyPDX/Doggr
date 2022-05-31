@@ -1,10 +1,10 @@
 name: Doggr CI
 
 on:
-#  push:
-#    branches: [master]
-#  pull_request:
-#    branches: [master]
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
   workflow_dispatch:
 #    inputs:
 #      version:
@@ -89,4 +89,4 @@ jobs:
       - name: Log in to DO Container Registry
         run: doctl registry login --expiry-seconds 600
       - name: Push image to DO Container Registry
-        run: docker compose -f docker-compose.prod.yml push
+        run: docker compose -f docker-compose.yml push
