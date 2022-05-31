@@ -151,13 +151,13 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
+          username: root
           key: ${{ secrets.SSH_KEY_SECRET }}
           port: 22
           script: |                
             cd /app/Doggr
             doctl registry login
-            docker-compose up -d 
+            sudo docker-compose up -d 
             touch docker_up.txt
 
 #      - name: copy file via ssh password
