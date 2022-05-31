@@ -6,3 +6,5 @@ dist/
 *.log
 Dockerfile
 .dockerignore
+.env.example
+.env
