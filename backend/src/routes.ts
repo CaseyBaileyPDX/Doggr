@@ -89,10 +89,6 @@ export default function setupRoutes(app) {
   // This will redirect all requests made to /api/vi/... to the router
   app.use("/api/v1", router);
 
-  app.get("/", async (req, res) => {
-    return getStaticFile(res, "index.html");
-  });
-
   app.use((req, res, next) => {
     return res.status(404).json({
       message: "This page doesn't exist!",
