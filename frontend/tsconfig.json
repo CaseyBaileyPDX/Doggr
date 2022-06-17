@@ -13,7 +13,7 @@
     // QoL
     "strict": true,
     "strictNullChecks": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "strictPropertyInitialization": true
   },
   "include": [
